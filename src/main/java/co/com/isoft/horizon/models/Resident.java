@@ -1,7 +1,6 @@
 package co.com.isoft.horizon.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;

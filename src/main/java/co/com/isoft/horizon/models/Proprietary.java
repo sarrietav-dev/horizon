@@ -1,7 +1,5 @@
 package co.com.isoft.horizon.models;
 
-import lombok.Data;
-
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Date;
