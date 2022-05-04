@@ -17,10 +17,9 @@ public class Resident extends Person {
     @OneToMany(mappedBy = "user")
     private List<PQRS> pqrs;
 
-    public Resident(String id, String name, String surname, String email, String phoneNumber, Date birthDate, String password, List<PQRS> pqrs, Apartment address) {
-        super(id, name, surname, email, phoneNumber, birthDate, password);
+    public Resident(String id, String name, String surname, String phoneNumber, Date birthDate, User user, Apartment address) {
+        super(id, name, surname, phoneNumber, birthDate, user);
         this.address = address;
-        this.pqrs = pqrs;
     }
 
     protected Resident() {

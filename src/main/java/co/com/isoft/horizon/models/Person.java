@@ -16,13 +16,12 @@ public abstract class Person {
     private String name;
     private String surname;
 
-    @Column(unique = true)
-    private String email;
-
     private String phoneNumber;
     private Date birthDate;
-    private String password;
 
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     protected Person() {
 
