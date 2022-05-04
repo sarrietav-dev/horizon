@@ -11,7 +11,6 @@ import java.util.List;
 
 @Entity
 @Data
-@AllArgsConstructor
 public class PQRS {
     @Id
     private Long id;
@@ -21,12 +20,19 @@ public class PQRS {
     private String category;
 
     @ManyToOne
-    private User user;
+    private Person user;
 
     private Float rating;
 
     @OneToMany(mappedBy = "pqrs")
     private List<Reply> replies;
+
+    public PQRS(String title, String description, String category, Person user) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.user = user;
+    }
 
     protected PQRS() {
     }
