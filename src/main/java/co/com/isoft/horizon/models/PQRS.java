@@ -1,6 +1,5 @@
 package co.com.isoft.horizon.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -18,18 +17,19 @@ public class PQRS {
     private String category;
 
     @ManyToOne
-    private Person user;
+    @JoinColumn(name = "person_id")
+    private Person person;
 
     private Float rating;
 
     @OneToMany(mappedBy = "pqrs")
     private List<Reply> replies;
 
-    public PQRS(String title, String description, String category, Person user) {
+    public PQRS(String title, String description, String category, Person person) {
         this.title = title;
         this.description = description;
         this.category = category;
-        this.user = user;
+        this.person = person;
     }
 
     protected PQRS() {

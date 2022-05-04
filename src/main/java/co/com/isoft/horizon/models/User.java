@@ -1,8 +1,9 @@
 package co.com.isoft.horizon.models;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
-@Entity
+@Entity(name = "auth_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,10 +16,9 @@ public class User {
     @OneToOne
     private Person userData;
 
-    public User(String email, String password, Person userData) {
+    public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.userData = userData;
     }
 
     protected User() {

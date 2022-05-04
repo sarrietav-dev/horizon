@@ -18,6 +18,7 @@ public class Apartment {
     private String number;
 
     @ManyToOne
+    @JoinColumn(name = "person_id")
     private Proprietary proprietary;
 
     @OneToMany(mappedBy = "address")

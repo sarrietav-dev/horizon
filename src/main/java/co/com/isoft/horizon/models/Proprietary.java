@@ -12,11 +12,12 @@ public class Proprietary extends Person {
     @OneToMany(mappedBy = "proprietary")
     private List<Apartment> properties;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     private List<PQRS> pqrs;
 
-    public Proprietary(String name, String surname, String phoneNumber, Date birthDate) {
-        super(name, surname, phoneNumber, birthDate);
+    public Proprietary(String name, String surname, String phoneNumber, Date birthDate, User authData, List<Apartment> properties) {
+            super(name, surname, phoneNumber, birthDate, authData);
+        this.properties = properties;
     }
 
     protected Proprietary() {

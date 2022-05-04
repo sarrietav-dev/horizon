@@ -12,9 +12,11 @@ public class Reply {
     private Long id;
     private String content;
     @ManyToOne
+    @MapsId
     private PQRS pqrs;
 
     @ManyToOne
+    @JoinColumn(name = "person_id")
     private Person createdBy;
 
     public Reply(String content, PQRS pqrs, Person createdBy) {
