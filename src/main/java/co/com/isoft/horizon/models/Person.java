@@ -12,6 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 public abstract class Person {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
     private String name;
     private String surname;
