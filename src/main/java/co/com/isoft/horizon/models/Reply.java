@@ -1,24 +1,29 @@
 package co.com.isoft.horizon.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Data
-@AllArgsConstructor
 public class Reply {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String content;
     @ManyToOne
+    @MapsId
     private PQRS pqrs;
 
     @ManyToOne
-    private User createdBy;
+    @JoinColumn(name = "person_id")
+    private Person createdBy;
+
+    public Reply(String content, PQRS pqrs, Person createdBy) {
+        this.content = content;
+        this.pqrs = pqrs;
+        this.createdBy = createdBy;
+    }
 
     protected Reply() {
     }

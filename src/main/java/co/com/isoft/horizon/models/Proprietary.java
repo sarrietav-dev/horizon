@@ -6,17 +6,16 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Proprietary extends User {
+public class Proprietary extends Person {
     @OneToMany(mappedBy = "proprietary")
     private List<Apartment> properties;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "person")
     private List<PQRS> pqrs;
 
-    public Proprietary(String id, String name, String surname, String email, String phoneNumber, Date birthDate, String password, List<PQRS> pqrs, List<Apartment> properties) {
-        super(id, name, surname, email, phoneNumber, birthDate, password);
+    public Proprietary(String name, String surname, String phoneNumber, Date birthDate, User authData, List<Apartment> properties) {
+            super(name, surname, phoneNumber, birthDate, authData);
         this.properties = properties;
-        this.pqrs = pqrs;
     }
 
     protected Proprietary() {

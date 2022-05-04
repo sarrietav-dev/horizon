@@ -4,9 +4,9 @@ import javax.persistence.Entity;
 import java.util.Date;
 
 @Entity
-public class Administrator extends User {
-    public Administrator(String id, String name, String surname, String email, String phoneNumber, Date birthDate, String password) {
-        super(id, name, surname, email, phoneNumber, birthDate, password);
+public class Administrator extends Person {
+    public Administrator(String name, String surname, String phoneNumber, Date birthDate, User authData) {
+        super(name, surname, phoneNumber, birthDate, authData);
     }
 
     public Administrator() {

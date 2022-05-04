@@ -1,30 +1,35 @@
 package co.com.isoft.horizon.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Data
-@AllArgsConstructor
-public abstract class User {
+@Entity(name = "auth_user")
+public class User {
     @Id
-    private String id;
-    private String name;
-    private String surname;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Column(unique = true)
     private String email;
 
-    private String phoneNumber;
-    private Date birthDate;
     private String password;
 
+    @OneToOne
+    private Person userData;
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     protected User() {
 
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 }
