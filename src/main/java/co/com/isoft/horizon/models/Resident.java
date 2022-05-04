@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-public class Resident extends User {
+public class Resident extends Person {
     @ManyToOne
     protected Apartment address;
 

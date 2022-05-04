@@ -10,7 +10,7 @@ import java.util.Date;
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Data
 @AllArgsConstructor
-public abstract class User {
+public abstract class Person {
     @Id
     private String id;
     private String name;
@@ -24,7 +24,7 @@ public abstract class User {
     private String password;
 
 
-    protected User() {
+    protected Person() {
 
     }
 }

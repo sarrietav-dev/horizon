@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Proprietary extends User {
+public class Proprietary extends Person {
     @OneToMany(mappedBy = "proprietary")
     private List<Apartment> properties;
 
