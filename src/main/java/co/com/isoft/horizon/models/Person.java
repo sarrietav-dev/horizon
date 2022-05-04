@@ -14,15 +14,19 @@ public abstract class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String id;
+
     private String name;
     private String surname;
 
     private String phoneNumber;
     private Date birthDate;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    public Person(String name, String surname, String phoneNumber, Date birthDate) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.birthDate = birthDate;
+    }
 
     protected Person() {
 

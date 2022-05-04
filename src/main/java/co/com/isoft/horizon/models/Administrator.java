@@ -5,8 +5,8 @@ import java.util.Date;
 
 @Entity
 public class Administrator extends Person {
-    public Administrator(String id, String name, String surname, String phoneNumber, Date birthDate, User user) {
-        super(id, name, surname, phoneNumber, birthDate, user);
+    public Administrator(String name, String surname, String phoneNumber, Date birthDate) {
+        super(name, surname, phoneNumber, birthDate);
     }
 
     public Administrator() {

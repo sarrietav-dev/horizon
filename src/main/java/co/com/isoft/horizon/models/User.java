@@ -12,12 +12,13 @@ public class User {
 
     private String password;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne
     private Person userData;
 
-    public User(String email, String password) {
+    public User(String email, String password, Person userData) {
         this.email = email;
         this.password = password;
+        this.userData = userData;
     }
 
     protected User() {

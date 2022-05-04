@@ -15,8 +15,8 @@ public class Proprietary extends Person {
     @OneToMany(mappedBy = "user")
     private List<PQRS> pqrs;
 
-    public Proprietary(String id, String name, String surname, String phoneNumber, Date birthDate, User user) {
-        super(id, name, surname, phoneNumber, birthDate, user);
+    public Proprietary(String name, String surname, String phoneNumber, Date birthDate) {
+        super(name, surname, phoneNumber, birthDate);
     }
 
     protected Proprietary() {
