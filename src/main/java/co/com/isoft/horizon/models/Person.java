@@ -1,5 +1,6 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.PersonDTO;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,4 +45,7 @@ public abstract class Person {
     protected Person() {
 
     }
+
+
+    public abstract Person from(PersonDTO personDTO);
 }
