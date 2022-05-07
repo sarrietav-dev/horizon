@@ -10,11 +10,18 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public abstract class PersonDTO {
-    private String id;
+    private Long id;
 
     private String name;
     private String surname;
 
     private String phoneNumber;
     private Date birthDate;
+
+    public PersonDTO(String name, String surname, String phoneNumber, Date birthDate) {
+        this.name = name;
+        this.surname = surname;
+        this.phoneNumber = phoneNumber;
+        this.birthDate = birthDate;
+    }
 }
