@@ -1,7 +1,6 @@
 package co.com.isoft.horizon.models;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity(name = "auth_user")
 public class User {
@@ -13,12 +12,15 @@ public class User {
 
     private String password;
 
+    private String role;
+
     @OneToOne
     private Person userData;
 
-    public User(String email, String password) {
+    public User(String email, String password, String role) {
         this.email = email;
         this.password = password;
+        this.role = role;
     }
 
     protected User() {
@@ -31,5 +33,13 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
