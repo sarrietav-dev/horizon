@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 @Setter
 public class ApartmentDTO {
-    private String tower;
-    private String stories;
-    private String number;
+    protected String tower;
+    protected String stories;
+    protected String number;
 
-    private List<ResidentDTO> residents;
+    protected List<ResidentDTO> residents;
 }
