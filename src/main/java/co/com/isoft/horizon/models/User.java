@@ -1,23 +1,28 @@
 package co.com.isoft.horizon.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity(name = "auth_user")
+@Getter
+@Setter
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String email;
 
     private String password;
 
-    private String role;
-
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "authData", fetch = FetchType.LAZY)
     private Person userData;
 
-    public User(String email, String password, String role) {
+    private Role role;
+
+    public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -33,13 +38,5 @@ public class User {
 
     public Long getId() {
         return id;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
     }
 }
