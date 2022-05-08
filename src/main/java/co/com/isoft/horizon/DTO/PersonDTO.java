@@ -1,6 +1,7 @@
 package co.com.isoft.horizon.DTO;
 
 import co.com.isoft.horizon.DTO.persontypes.ResidentDTO;
+import co.com.isoft.horizon.models.Person;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
@@ -29,4 +30,6 @@ public abstract class PersonDTO {
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
     }
+
+    public abstract Person toEntity();
 }

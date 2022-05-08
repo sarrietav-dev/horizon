@@ -22,16 +22,10 @@ public class UserController {
     @PostMapping("/")
     public User createUser(@RequestBody UserDTO userDTO) {
         User user = User.from(userDTO);
-        switch (user.getRole()) {
-            case ADMIN:
-            case PROPRIETARY:
-                break;
-            case RESIDENT:
-                Person person = Resident.from(userDTO.getUserData());
-                user.setUserData(person);
-                person.setAuthData(user);
-                break;
-        }
+
+        Person person = userDTO.getUserData().toEntity();
+        user.setUserData(person);
+        person.setAuthData(user);
 
         return userService.createUser(user);
     }
