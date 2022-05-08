@@ -15,7 +15,4 @@ public class Administrator extends Person {
     }
 
 
-    public static Person from(PersonDTO personDTO) {
-        return null;
-    }
 }

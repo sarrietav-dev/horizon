@@ -36,10 +36,6 @@ public class Resident extends Person {
     protected Resident() {
     }
 
-    public static Person from(PersonDTO personDTO) {
-        return new Resident(personDTO.getName(), personDTO.getSurname(), personDTO.getPhoneNumber(), personDTO.getBirthDate());
-    }
-
     public Apartment getAddress() {
         return address;
     }

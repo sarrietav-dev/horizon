@@ -24,10 +24,6 @@ public class Proprietary extends Person {
     }
 
 
-    public static Person from(PersonDTO personDTO) {
-        return null;
-    }
-
     public List<Apartment> getProperties() {
         return properties;
     }
