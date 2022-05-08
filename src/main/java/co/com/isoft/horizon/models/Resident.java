@@ -36,8 +36,7 @@ public class Resident extends Person {
     protected Resident() {
     }
 
-    @Override
-    public Person from(PersonDTO personDTO) {
+    public static Person from(PersonDTO personDTO) {
         return new Resident(personDTO.getName(), personDTO.getSurname(), personDTO.getPhoneNumber(), personDTO.getBirthDate());
     }
 

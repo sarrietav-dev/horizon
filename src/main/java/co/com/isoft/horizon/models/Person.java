@@ -45,7 +45,4 @@ public abstract class Person {
     protected Person() {
 
     }
-
-
-    public abstract Person from(PersonDTO personDTO);
 }
