@@ -1,5 +1,6 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.PersonDTO;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 public abstract class Person {

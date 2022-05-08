@@ -1,5 +1,6 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.UserDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,5 +39,12 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    /**
+     * Converts from DTO to Entity
+     */
+    public static User from(UserDTO dto) {
+        return new User(dto.getEmail(), dto.getPassword(), dto.getRole());
     }
 }

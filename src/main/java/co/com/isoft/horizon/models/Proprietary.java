@@ -1,5 +1,7 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.PersonDTO;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Date;
@@ -20,6 +22,7 @@ public class Proprietary extends Person {
 
     protected Proprietary() {
     }
+
 
     public List<Apartment> getProperties() {
         return properties;

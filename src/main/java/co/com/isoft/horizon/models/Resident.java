@@ -1,6 +1,9 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.PersonDTO;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -11,6 +14,8 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
+@Getter
+@Setter
 public class Resident extends Person {
     @ManyToOne
     @JoinColumn(name = "address_id")
@@ -22,6 +27,10 @@ public class Resident extends Person {
     public Resident(String name, String surname, String phoneNumber, Date birthDate, User authData, Apartment address) {
         super(name, surname, phoneNumber, birthDate, authData);
         this.address = address;
+    }
+
+    public Resident(String name, String surname, String phoneNumber, Date birthDate) {
+        super(name, surname, phoneNumber, birthDate);
     }
 
     protected Resident() {

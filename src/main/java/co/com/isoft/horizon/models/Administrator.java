@@ -1,5 +1,7 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.PersonDTO;
+
 import javax.persistence.Entity;
 import java.util.Date;
 
@@ -11,4 +13,6 @@ public class Administrator extends Person {
 
     public Administrator() {
     }
+
+
 }
