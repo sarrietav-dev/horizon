@@ -15,10 +15,13 @@ public class PqrsDTO {
 
     private PersonDTO person;
 
-    public PqrsDTO(String title, String description, String category) {
+    private Long personId;
+
+    public PqrsDTO(String title, String description, String category, Long personId) {
         this.title = title;
         this.description = description;
         this.category = category;
+        this.personId = personId;
     }
 
     public PqrsDTO(PQRS pqrs) {
