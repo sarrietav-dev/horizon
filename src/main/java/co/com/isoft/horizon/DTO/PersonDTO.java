@@ -31,5 +31,9 @@ public abstract class PersonDTO {
         this.birthDate = birthDate;
     }
 
+    public PersonDTO(Long id) {
+        this.id = id;
+    }
+
     public abstract Person toEntity();
 }
