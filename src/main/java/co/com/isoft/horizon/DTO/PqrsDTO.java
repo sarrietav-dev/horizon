@@ -1,5 +1,6 @@
 package co.com.isoft.horizon.DTO;
 
+import co.com.isoft.horizon.models.PQRS;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,5 +19,11 @@ public class PqrsDTO {
         this.title = title;
         this.description = description;
         this.category = category;
+    }
+
+    public PqrsDTO(PQRS pqrs) {
+        this.title = pqrs.getTitle();
+        this.category = pqrs.getCategory();
+        this.description = pqrs.getDescription();
     }
 }
