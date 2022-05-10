@@ -2,16 +2,15 @@ package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.DTO.UserDTO;
 import co.com.isoft.horizon.models.Person;
-import co.com.isoft.horizon.models.Resident;
-import co.com.isoft.horizon.models.Role;
 import co.com.isoft.horizon.models.User;
 import co.com.isoft.horizon.services.UserService;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController(value = "/api/users")
+@RestController
+@RequestMapping("/api/user")
 public class UserController {
     final UserService userService;
 
