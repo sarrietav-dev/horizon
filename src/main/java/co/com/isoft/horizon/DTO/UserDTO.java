@@ -4,8 +4,6 @@ import co.com.isoft.horizon.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.SecondaryTable;
-
 @Getter
 @Setter
 public class UserDTO {

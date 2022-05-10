@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 public class PqrsService {
     private final PQRSRepo pqrsRepo;
 
-
     public PqrsService(PQRSRepo pqrsRepo) {
         this.pqrsRepo = pqrsRepo;
     }
