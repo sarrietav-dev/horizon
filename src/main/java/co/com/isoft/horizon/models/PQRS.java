@@ -1,5 +1,6 @@
 package co.com.isoft.horizon.models;
 
+import co.com.isoft.horizon.DTO.PqrsDTO;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -30,6 +31,12 @@ public class PQRS {
         this.description = description;
         this.category = category;
         this.person = person;
+    }
+
+    public PQRS(PqrsDTO dto) {
+        this.title = dto.getTitle();
+        this.category = dto.getCategory();
+        this.description = dto.getDescription();
     }
 
     protected PQRS() {
