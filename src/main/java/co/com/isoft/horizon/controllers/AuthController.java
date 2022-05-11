@@ -5,6 +5,7 @@ import co.com.isoft.horizon.services.ResourceNotFoundException;
 import co.com.isoft.horizon.services.UserService;
 import co.com.isoft.horizon.utils.TokenMissingException;
 import co.com.isoft.horizon.utils.TokenService;
+import co.com.isoft.horizon.utils.TokenUtils;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -28,16 +29,15 @@ import java.util.Map;
 @Slf4j
 public class AuthController {
     private final UserService userService;
-    private final TokenService tokenService;
-
-    public AuthController(UserService userService, TokenService tokenService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
-        this.tokenService = tokenService;
     }
 
     @GetMapping("/token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            TokenService tokenService = new TokenUtils();
+
             String refreshToken = tokenService.extractAuthorizationToken(request);
             DecodedJWT decodedJWT = tokenService.decodeJWT(refreshToken);
 
