@@ -1,7 +1,6 @@
 package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.DTO.UserDTO;
-import co.com.isoft.horizon.models.Person;
 import co.com.isoft.horizon.models.User;
 import co.com.isoft.horizon.services.ResourceNotFoundException;
 import co.com.isoft.horizon.services.UserService;
