@@ -18,7 +18,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Service @Slf4j @RequiredArgsConstructor @Transactional
+@Service
+@Slf4j
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImplementation implements UserService, UserDetailsService {
     final UserRepo userRepo;
     final RoleRepo roleRepo;
@@ -53,11 +56,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User setRoleToUser(String roleName, Long id) throws UserNotFoundException {
+    public User setRoleToUser(String roleName, Long id) throws ResourceNotFoundException {
         log.info("Setting role {} to the user with id {}", roleName, id);
 
         User user = this.getUser(id);
-        Role role = roleRepo.findByName(roleName);
+        Role role = this.getRole(roleName);
 
         user.setRole(role);
 
@@ -65,12 +68,17 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public User getUser(Long id) throws UserNotFoundException {
-        return userRepo.findById(id).orElseThrow(UserNotFoundException::new);
+    public User getUser(Long id) throws ResourceNotFoundException {
+        return userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("The user with the id %d doesn't exist", id)));
     }
 
     @Override
     public List<User> getUsers() {
         return null;
+    }
+
+    @Override
+    public Role getRole(String name) throws ResourceNotFoundException {
+        return roleRepo.findByName(name).orElseThrow(() -> new ResourceNotFoundException(String.format("The role with the name %s doesn't exist", name)));
     }
 }
