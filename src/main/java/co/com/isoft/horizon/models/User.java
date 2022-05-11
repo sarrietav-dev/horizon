@@ -32,6 +32,11 @@ public class User {
         this.role = role;
     }
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     protected User() {
 
     }
@@ -48,6 +53,6 @@ public class User {
      * Converts from DTO to Entity
      */
     public static User from(UserDTO dto) {
-        return new User(dto.getEmail(), dto.getPassword(), dto.getRole());
+        return new User(dto.getEmail(), dto.getPassword());
     }
 }
