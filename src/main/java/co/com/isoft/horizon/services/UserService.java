@@ -10,6 +10,7 @@ public interface UserService {
     Role saveRole(Role role) throws DuplicateResourceException;
     User setRoleToUser(String roleName, Long id) throws ResourceNotFoundException;
     User getUser(Long id) throws ResourceNotFoundException;
+    User getUser(String email) throws ResourceNotFoundException;
     List<User> getUsers();
 
     Role getRole(String name) throws ResourceNotFoundException;

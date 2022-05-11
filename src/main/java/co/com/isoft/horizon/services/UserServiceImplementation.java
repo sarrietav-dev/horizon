@@ -29,11 +29,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepo.findByEmail(email);
-
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found in the database");
-        }
+        User user = userRepo.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found in the database"));
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
@@ -71,6 +67,11 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     @Override
     public User getUser(Long id) throws ResourceNotFoundException {
         return userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("The user with the id %d doesn't exist", id)));
+    }
+
+    @Override
+    public User getUser(String email) throws ResourceNotFoundException {
+        return userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("The user with the email %s doesn't exist", email)));
     }
 
     @Override
