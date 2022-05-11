@@ -4,6 +4,7 @@ import co.com.isoft.horizon.DTO.UserDTO;
 import co.com.isoft.horizon.models.Person;
 import co.com.isoft.horizon.models.User;
 import co.com.isoft.horizon.services.UserService;
+import co.com.isoft.horizon.services.UserServiceImplementation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,6 @@ public class UserController {
         user.setUserData(person);
         person.setAuthData(user);
 
-        return userService.createUser(user);
+        return userService.saveUser(user);
     }
 }
