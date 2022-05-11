@@ -53,6 +53,12 @@ public class User {
      * Converts from DTO to Entity
      */
     public static User from(UserDTO dto) {
-        return new User(dto.getEmail(), dto.getPassword());
+        User user = new User(dto.getEmail(), dto.getPassword());
+        Person person = dto.getUserData().toEntity();
+
+        user.setUserData(person);
+        person.setAuthData(user);
+
+        return user;
     }
 }
