@@ -2,6 +2,7 @@ package co.com.isoft.horizon.config;
 
 import co.com.isoft.horizon.filters.CustomAuthenticationFilter;
 import co.com.isoft.horizon.filters.CustomAuthorizationFilter;
+import co.com.isoft.horizon.utils.TokenUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManagerBean());
+        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManagerBean(), new TokenUtils());
         filter.setFilterProcessesUrl("/api/auth/login");
 
         http.csrf().disable();
@@ -44,7 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().anyRequest().authenticated();
 
         http.addFilter(filter);
-        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new CustomAuthorizationFilter(new TokenUtils()), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
