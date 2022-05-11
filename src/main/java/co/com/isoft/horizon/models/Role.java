@@ -18,6 +18,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
