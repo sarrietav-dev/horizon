@@ -3,6 +3,8 @@ package co.com.isoft.horizon.repositories;
 import co.com.isoft.horizon.models.Role;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface RoleRepo extends CrudRepository<Role, Long>{
-    Role findByName(String name);
+    Optional<Role> findByName(String name);
 }
