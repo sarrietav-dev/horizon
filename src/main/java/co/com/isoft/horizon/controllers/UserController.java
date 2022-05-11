@@ -3,15 +3,20 @@ package co.com.isoft.horizon.controllers;
 import co.com.isoft.horizon.DTO.UserDTO;
 import co.com.isoft.horizon.models.Person;
 import co.com.isoft.horizon.models.User;
-import co.com.isoft.horizon.services.UserNotFoundException;
+import co.com.isoft.horizon.services.ResourceNotFoundException;
 import co.com.isoft.horizon.services.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/user")
+@Slf4j
 public class UserController {
     final UserService userService;
 
@@ -19,15 +24,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/")
-    public User createUser(@RequestBody UserDTO userDTO) {
-        User user = User.from(userDTO);
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
+        try {
+            User user = User.from(userDTO);
 
-        Person person = userDTO.getUserData().toEntity();
-        user.setUserData(person);
-        person.setAuthData(user);
+            user.setRole(userService.getRole(userDTO.getRole()));
 
-        return userService.saveUser(user);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user").toUriString());
+
+            return ResponseEntity.created(uri).body(userService.saveUser(user));
+        } catch (ResourceNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
     }
 
     @PatchMapping("/{id}/role")
@@ -35,7 +46,8 @@ public class UserController {
         try {
             User newUser = userService.setRoleToUser(body.getRoleName(), id);
             return ResponseEntity.accepted().body(newUser);
-        } catch (UserNotFoundException e) {
+        } catch (ResourceNotFoundException e) {
+            log.error(e.getMessage());
             return ResponseEntity.notFound().build();
         }
     }
