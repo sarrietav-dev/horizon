@@ -3,12 +3,12 @@ package co.com.isoft.horizon.controllers;
 import co.com.isoft.horizon.DTO.UserDTO;
 import co.com.isoft.horizon.models.Person;
 import co.com.isoft.horizon.models.User;
+import co.com.isoft.horizon.services.UserNotFoundException;
 import co.com.isoft.horizon.services.UserService;
-import co.com.isoft.horizon.services.UserServiceImplementation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user")
@@ -28,5 +28,22 @@ public class UserController {
         person.setAuthData(user);
 
         return userService.saveUser(user);
+    }
+
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<User> updateRole(@RequestBody UpdateRoleForm body, @PathVariable Long id) {
+        try {
+            User newUser = userService.setRoleToUser(body.getRoleName(), id);
+            return ResponseEntity.accepted().body(newUser);
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static
+    class UpdateRoleForm {
+        private String roleName;
     }
 }
