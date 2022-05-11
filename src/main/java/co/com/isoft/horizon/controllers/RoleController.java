@@ -1,9 +1,9 @@
 package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.models.Role;
+import co.com.isoft.horizon.services.DuplicateResourceException;
 import co.com.isoft.horizon.services.UserService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,9 +15,9 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/role")
+@Slf4j
 public class RoleController {
-    final
-    UserService userService;
+    final UserService userService;
 
     public RoleController(UserService userService) {
         this.userService = userService;
@@ -25,8 +25,13 @@ public class RoleController {
 
     @PostMapping
     ResponseEntity<Role> createRole(@RequestBody Role role) {
-        Role newRole = userService.saveRole(role);
-        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/").toUriString());
-        return ResponseEntity.created(uri).body(newRole);
+        try {
+            Role newRole = userService.saveRole(role);
+            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/").toUriString());
+            return ResponseEntity.created(uri).body(newRole);
+        } catch (DuplicateResourceException e) {
+            log.error(e.getMessage());
+            throw new RuntimeException(e);
+        }
     }
 }

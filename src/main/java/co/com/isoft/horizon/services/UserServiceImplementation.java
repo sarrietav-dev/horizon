@@ -50,8 +50,9 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
     }
 
     @Override
-    public Role saveRole(Role role) {
+    public Role saveRole(Role role) throws DuplicateResourceException {
         log.info("Saving new role {} to the database", role.getName());
+        if (roleRepo.existsByName(role.getName())) throw new DuplicateResourceException("The role name already exists");
         return roleRepo.save(role);
     }
 
