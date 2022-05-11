@@ -1,7 +1,5 @@
 package co.com.isoft.horizon.models;
 
-import co.com.isoft.horizon.DTO.PersonDTO;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

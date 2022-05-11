@@ -21,12 +21,19 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "authData", fetch = FetchType.LAZY)
     private Person userData;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
     private Role role;
 
     public User(String email, String password, Role role) {
         this.email = email;
         this.password = password;
         this.role = role;
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
     }
 
     protected User() {
@@ -45,6 +52,12 @@ public class User {
      * Converts from DTO to Entity
      */
     public static User from(UserDTO dto) {
-        return new User(dto.getEmail(), dto.getPassword(), dto.getRole());
+        User user = new User(dto.getEmail(), dto.getPassword());
+        Person person = dto.getUserData().toEntity();
+
+        user.setUserData(person);
+        person.setAuthData(user);
+
+        return user;
     }
 }

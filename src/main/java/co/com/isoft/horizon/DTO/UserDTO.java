@@ -1,6 +1,5 @@
 package co.com.isoft.horizon.DTO;
 
-import co.com.isoft.horizon.models.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,9 +14,9 @@ public class UserDTO {
 
     private PersonDTO userData;
 
-    private Role role;
+    private String role;
 
-    public UserDTO(String email, String password, PersonDTO userData, Role role) {
+    public UserDTO(String email, String password, PersonDTO userData, String role) {
         this.email = email;
         this.password = password;
         this.userData = userData;
