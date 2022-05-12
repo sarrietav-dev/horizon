@@ -10,43 +10,37 @@
 
 <script setup>
 import TheLoginForm from "@/components/TheLoginForm.vue";
-import { useAxios } from "@vueuse/integrations/useAxios";
-import { instance } from "@/utils/axiosInstance";
 import { ref } from "vue";
 import qs from "qs";
 import { ACCESS_TOKEN, REFRESH_TOKEN, useAuthStore } from "../stores/authStore";
+import { useRouter } from "vue-router";
+import axios from "axios";
 
 const email = ref("");
 const password = ref("");
 
-const handleSubmit = async () => {
-  const auth = useAuthStore();
+const auth = useAuthStore();
+const router = useRouter();
 
+const handleSubmit = async () => {
   const queryString = qs.stringify({
     email: email.value,
     password: password.value,
   });
 
-  const { response, isFinished } = await useAxios(
-    "/auth/login",
-    {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: queryString,
-      method: "POST",
+  const response = await axios.post("/api/auth/login", queryString, {
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
     },
-    instance,
-    { immediate: true }
-  );
+  });
 
-  if (isFinished) {
-    const { headers, status } = response.value;
+  const { headers, status } = response;
 
-    if (status === 200) {
-      auth.setAccessToken(headers[ACCESS_TOKEN]);
-      auth.setRefreshToken(headers[REFRESH_TOKEN]);
-    }
+  if (status === 200) {
+    auth.setAccessToken(headers[ACCESS_TOKEN]);
+    auth.setRefreshToken(headers[REFRESH_TOKEN]);
+
+    await router.replace({ name: "home" });
   }
 };
 </script>
