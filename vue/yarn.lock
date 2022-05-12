@@ -349,9 +349,9 @@
   resolved "https://registry.npmjs.org/@vue/tsconfig/-/tsconfig-0.1.3.tgz"
   integrity sha512-kQVsh8yyWPvHpb8gIc9l/HIDiiVUy1amynLNpCy8p+FoCiZXCo6fQos5/097MmnNZc9AtseDsCrfkhqCrJ8Olg==
 
-"@vueuse/core@8.4.2":
+"@vueuse/core@8.4.2", "@vueuse/core@^8.4.2":
   version "8.4.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/core/-/core-8.4.2.tgz#e5be73f40394150e6a1b6abd59e5adb7c6bb6c1f"
+  resolved "https://registry.npmjs.org/@vueuse/core/-/core-8.4.2.tgz"
   integrity sha512-dUVU96lii1ZdWoNJXauQNt+4QrHz1DKbuW+y6pDR2N10q7rGZJMDU7pQeMcC2XeosX7kMODfaBuqsF03NozzLg==
   dependencies:
     "@vueuse/metadata" "8.4.2"
@@ -360,7 +360,7 @@
 
 "@vueuse/integrations@^8.4.2":
   version "8.4.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/integrations/-/integrations-8.4.2.tgz#d7543625155aef3e07fa23b8d48897332bb96793"
+  resolved "https://registry.npmjs.org/@vueuse/integrations/-/integrations-8.4.2.tgz"
   integrity sha512-pFiIHHoGb0kLU946S5jCcIsJ63VP8whYutTGSUxR0ItN5UleLzh/6Ml9lSjnx2jPUGkYI0qe+CgSa7qhJEHXvQ==
   dependencies:
     "@vueuse/core" "8.4.2"
@@ -369,12 +369,12 @@
 
 "@vueuse/metadata@8.4.2":
   version "8.4.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/metadata/-/metadata-8.4.2.tgz#b33e6b7bd5ca69e3f24ea41b149267118bcd566f"
+  resolved "https://registry.npmjs.org/@vueuse/metadata/-/metadata-8.4.2.tgz"
   integrity sha512-2BIj++7P0/I5dfMsEe8q7Kw0HqVAjVcyNOd9+G22/ILUC9TVLTeYOuJ1kwa1Gpr+0LWKHc6GqHiLWNL33+exoQ==
 
 "@vueuse/shared@8.4.2":
   version "8.4.2"
-  resolved "https://registry.yarnpkg.com/@vueuse/shared/-/shared-8.4.2.tgz#5900f06ff78bd8b6df4cbf48f8ca82dd6d9747d1"
+  resolved "https://registry.npmjs.org/@vueuse/shared/-/shared-8.4.2.tgz"
   integrity sha512-hILXMEjL8YQhj1LHN/HZ49UThyfk8irTjhele2nW+L3N55ElFUBGB/f4w0rg8EW+/suhqv7kJJPTZzvHCqxlIw==
   dependencies:
     vue-demi "*"
@@ -463,7 +463,7 @@ asynckit@^0.4.0:
 
 axios@^0.27.2:
   version "0.27.2"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-0.27.2.tgz#207658cc8621606e586c85db4b41a750e756d972"
+  resolved "https://registry.npmjs.org/axios/-/axios-0.27.2.tgz"
   integrity sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==
   dependencies:
     follow-redirects "^1.14.9"
@@ -481,12 +481,12 @@ boolbase@^1.0.0:
 
 bootstrap-icons@^1.8.1:
   version "1.8.1"
-  resolved "https://registry.yarnpkg.com/bootstrap-icons/-/bootstrap-icons-1.8.1.tgz#773c1625bcbf3e86090ea9da4386c2c6459c5582"
+  resolved "https://registry.npmjs.org/bootstrap-icons/-/bootstrap-icons-1.8.1.tgz"
   integrity sha512-IXUqislddPJfwq6H+2nTkHyr9epO9h6u1AG0OZCx616w+TgzeoCjfmI3qJMQqt1J586gN2IxzB4M99Ip4sTZ1w==
 
 bootstrap@^5.1.3:
   version "5.1.3"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.1.3.tgz#ba081b0c130f810fa70900acbc1c6d3c28fa8f34"
+  resolved "https://registry.npmjs.org/bootstrap/-/bootstrap-5.1.3.tgz"
   integrity sha512-fcQztozJ8jToQWXxVuEyXWW+dSo8AiXWKwiSSrKWsRB/Qt+Ewwza+JWoLKiTuQLaEPhdNAJ7+Dosc9DOIqNy7Q==
 
 brace-expansion@^1.1.7:
@@ -1015,7 +1015,7 @@ flatted@^3.1.0:
 
 follow-redirects@^1.14.9:
   version "1.15.0"
-  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.15.0.tgz#06441868281c86d0dda4ad8bdaead2d02dca89d4"
+  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.15.0.tgz"
   integrity sha512-aExlJShTV4qOUOL7yF1U5tvLCB0xQuudbf6toyYA0E/acBNw71mvjFTnLaRp50aQaYocMR0a/RMMBIHeZnGyjQ==
 
 form-data@^4.0.0:

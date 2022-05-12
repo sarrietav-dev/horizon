@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@vueuse/core": "^8.4.2",
     "@vueuse/integrations": "^8.4.2",
     "axios": "^0.27.2",
     "bootstrap": "^5.1.3",
