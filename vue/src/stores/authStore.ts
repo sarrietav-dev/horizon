@@ -22,7 +22,5 @@ export const useAuthStore = defineStore("tokenManager", {
     isAuthenticated(): boolean {
       return this.accessToken !== null && this.refreshToken !== null;
     },
-    getAccessToken: () => localStorage.getItem(ACCESS_TOKEN),
-    getRefreshToken: () => localStorage.getItem(REFRESH_TOKEN),
   },
 });
