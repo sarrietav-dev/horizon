@@ -17,10 +17,14 @@ export const useAuthStore = defineStore("tokenManager", {
       this.refreshToken = token;
       return localStorage.setItem(REFRESH_TOKEN, token);
     },
+    fetchTokens() {
+      this.refreshToken = localStorage.getItem(REFRESH_TOKEN) ?? "";
+      this.accessToken = localStorage.getItem(ACCESS_TOKEN) ?? "";
+    },
   },
   getters: {
     isAuthenticated(): boolean {
-      return this.accessToken !== null && this.refreshToken !== null;
+      return this.accessToken !== "" && this.refreshToken !== "";
     },
   },
 });

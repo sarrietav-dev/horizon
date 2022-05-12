@@ -14,13 +14,16 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: () => import("../views/LoginView.vue"),
+      beforeEnter: (to, from) => {
+        const auth = useAuthStore();
+        if (auth.isAuthenticated) return { path: from.path };
+      },
     },
   ],
 });
 
 router.beforeEach((to) => {
   const auth = useAuthStore();
-
   if (!auth.isAuthenticated && to.name !== "login") return { name: "login" };
 });
 
