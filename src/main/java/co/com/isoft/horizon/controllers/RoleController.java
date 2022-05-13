@@ -1,8 +1,8 @@
 package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.models.Role;
-import co.com.isoft.horizon.services.DuplicateResourceException;
 import co.com.isoft.horizon.services.UserService;
+import co.com.isoft.horizon.services.exceptions.DuplicateResourceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

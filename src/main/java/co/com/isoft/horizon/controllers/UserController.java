@@ -2,8 +2,8 @@ package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.DTO.UserDTO;
 import co.com.isoft.horizon.models.User;
-import co.com.isoft.horizon.services.ResourceNotFoundException;
 import co.com.isoft.horizon.services.UserService;
+import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
