@@ -1,9 +1,10 @@
-package co.com.isoft.horizon.services;
+package co.com.isoft.horizon.services.implementations;
 
 import co.com.isoft.horizon.models.Role;
 import co.com.isoft.horizon.models.User;
 import co.com.isoft.horizon.repositories.RoleRepo;
 import co.com.isoft.horizon.repositories.UserRepo;
+import co.com.isoft.horizon.services.UserService;
 import co.com.isoft.horizon.services.exceptions.DuplicateResourceException;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
