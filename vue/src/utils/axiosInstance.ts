@@ -5,6 +5,6 @@ import axios from "axios";
  * If the base url for the api changes,
  * there's only one place where it needs to be changed.
  */
-export const instance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: "/api",
 });

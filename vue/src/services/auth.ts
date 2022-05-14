@@ -1,5 +1,5 @@
 import qs from "qs";
-import { instance } from "@/utils/axiosInstance";
+import { axiosInstance } from "@/utils/axiosInstance";
 import { FailedAuthenticationException } from "@/services/exceptions/FailedAuthenticationException";
 
 const RESOURCE_URL = "/auth";
@@ -15,11 +15,15 @@ export const authenticateUser = async (email: string, password: string) => {
     password,
   });
 
-  const response = await instance.post(`${RESOURCE_URL}/login`, queryString, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
+  const response = await axiosInstance.post(
+    `${RESOURCE_URL}/login`,
+    queryString,
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }
+  );
 
   const { headers, status } = response;
 
