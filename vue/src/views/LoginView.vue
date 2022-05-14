@@ -8,13 +8,12 @@
   </main>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import TheLoginForm from "@/components/TheLoginForm.vue";
 import { ref } from "vue";
-import qs from "qs";
-import { ACCESS_TOKEN, REFRESH_TOKEN, useAuthStore } from "../stores/authStore";
+import { useAuthStore } from "@/stores/authStore";
 import { useRouter } from "vue-router";
-import axios from "axios";
+import { authenticateUser } from "@/services/auth";
 
 const email = ref("");
 const password = ref("");
@@ -23,24 +22,18 @@ const auth = useAuthStore();
 const router = useRouter();
 
 const handleSubmit = async () => {
-  const queryString = qs.stringify({
-    email: email.value,
-    password: password.value,
-  });
+  try {
+    const { accessToken, refreshToken } = await authenticateUser(
+      email.value,
+      password.value
+    );
 
-  const response = await axios.post("/api/auth/login", queryString, {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  });
-
-  const { headers, status } = response;
-
-  if (status === 200) {
-    auth.setAccessToken(headers[ACCESS_TOKEN]);
-    auth.setRefreshToken(headers[REFRESH_TOKEN]);
+    auth.setAccessToken(accessToken);
+    auth.setRefreshToken(refreshToken);
 
     await router.replace({ name: "home" });
+  } catch (e) {
+    console.error(e);
   }
 };
 </script>
