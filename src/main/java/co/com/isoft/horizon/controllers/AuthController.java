@@ -1,8 +1,8 @@
 package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.models.User;
-import co.com.isoft.horizon.services.ResourceNotFoundException;
 import co.com.isoft.horizon.services.UserService;
+import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import co.com.isoft.horizon.utils.TokenMissingException;
 import co.com.isoft.horizon.utils.TokenService;
 import co.com.isoft.horizon.utils.TokenUtils;
@@ -29,6 +29,7 @@ import java.util.Map;
 @Slf4j
 public class AuthController {
     private final UserService userService;
+
     public AuthController(UserService userService) {
         this.userService = userService;
     }

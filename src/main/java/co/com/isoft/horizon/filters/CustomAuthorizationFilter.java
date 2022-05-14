@@ -33,29 +33,27 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
         if (request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/token")) {
             filterChain.doFilter(request, response);
         } else {
-                try {
-                    String token = tokenService.extractAuthorizationToken(request);
-                    DecodedJWT decodedJWT = tokenService.decodeJWT(token);
+            try {
+                String token = tokenService.extractAuthorizationToken(request);
+                DecodedJWT decodedJWT = tokenService.decodeJWT(token);
 
-                    String email = decodedJWT.getSubject();
-                    String[] roles = decodedJWT.getClaim("roles").asArray(String.class);
-                    Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                    Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+                String email = decodedJWT.getSubject();
+                String[] roles = decodedJWT.getClaim("role").asArray(String.class);
+                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
 
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                    filterChain.doFilter(request, response);
-                }
-                catch (TokenMissingException e) {
-                    filterChain.doFilter(request, response);
-                }
-                catch (Exception e) {
-                    log.error("Logging error: {}", e.getMessage());
-                    Map<String, String> payload = new HashMap<>();
-                    payload.put("error", e.getMessage());
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    new ObjectMapper().writeValue(response.getOutputStream(), payload);
-                }
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                filterChain.doFilter(request, response);
+            } catch (TokenMissingException e) {
+                filterChain.doFilter(request, response);
+            } catch (Exception e) {
+                log.error("Logging error: {}", e.getMessage());
+                Map<String, String> payload = new HashMap<>();
+                payload.put("error", e.getMessage());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                new ObjectMapper().writeValue(response.getOutputStream(), payload);
+            }
         }
     }
 }

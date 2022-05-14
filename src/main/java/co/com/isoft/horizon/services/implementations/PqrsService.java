@@ -1,4 +1,4 @@
-package co.com.isoft.horizon.services;
+package co.com.isoft.horizon.services.implementations;
 
 import co.com.isoft.horizon.models.PQRS;
 import co.com.isoft.horizon.repositories.PQRSRepo;
