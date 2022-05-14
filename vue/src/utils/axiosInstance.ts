@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useAuthStore } from "@/stores/authStore";
+import { useRouter } from "vue-router";
+
+const baseURL = "/api";
 
 /**
  * Used to reduce code duplication.
@@ -7,7 +10,7 @@ import { useAuthStore } from "@/stores/authStore";
  * there's only one place where it needs to be changed.
  */
 const axiosInstance = axios.create({
-  baseURL: "/api",
+  baseURL,
 });
 
 axiosInstance.interceptors.request.use(
@@ -25,26 +28,29 @@ axiosInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
     const auth = useAuthStore();
+    const router = useRouter();
 
-    const originalRequest = error.config;
+    if (error.response.status !== 401) {
+      return Promise.reject(error);
+    }
 
-    if (error.response) {
-      if (error.status === 403 && originalRequest._retry) {
-        originalRequest._retry = true;
+    try {
+      const response = await axios.get("/auth/token", {
+        headers: { Authorization: `Bearer ${auth.refreshToken}` },
+        baseURL,
+      });
 
-        const response = await axiosInstance.get("/auth/token", {
-          headers: {
-            Authorization: auth.refreshToken,
-          },
-        });
+      const { access_token } = response.headers;
 
-        const { headers, status } = response;
+      auth.setAccessToken(access_token);
 
-        if (status === 200) {
-          const { accessToken } = headers;
-          auth.setAccessToken(accessToken);
-        }
-      }
+      error.response.config.headers["Authorization"] = `Bearer ${access_token}`;
+
+      return axiosInstance(error.response.config);
+    } catch (error) {
+      auth.deleteTokens();
+      await router.replace("/login");
+      return Promise.reject(error);
     }
   }
 );
