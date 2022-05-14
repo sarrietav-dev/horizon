@@ -21,6 +21,10 @@ export const useAuthStore = defineStore("tokenManager", {
       this.refreshToken = localStorage.getItem(REFRESH_TOKEN) ?? "";
       this.accessToken = localStorage.getItem(ACCESS_TOKEN) ?? "";
     },
+    deleteTokens() {
+      this.setAccessToken("");
+      this.setRefreshToken("");
+    },
   },
   getters: {
     isAuthenticated(): boolean {

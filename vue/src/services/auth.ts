@@ -1,5 +1,5 @@
 import qs from "qs";
-import { axiosInstance } from "@/utils/axiosInstance";
+import axiosInstance from "@/utils/axiosInstance";
 import { FailedAuthenticationException } from "@/services/exceptions/FailedAuthenticationException";
 
 const RESOURCE_URL = "/auth";
