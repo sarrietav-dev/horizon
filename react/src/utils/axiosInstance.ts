@@ -14,10 +14,13 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (req) => {
-    const auth = tokenService;
-
-    if (req.headers) {
-      req.headers.Authorization = `Bearer ${auth.accessToken}`;
+    try {
+      if (req.headers && tokenService.accessToken) {
+        req.headers.Authorization = `Bearer ${tokenService.accessToken}`;
+      }
+      return req;
+    } catch (e) {
+      return req;
     }
   },
   (error) => Promise.reject(error)
@@ -26,6 +29,10 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
+    if (!error.response) {
+      return Promise.reject(error);
+    }
+
     if (error.response.status !== 401) {
       return Promise.reject(error);
     }
