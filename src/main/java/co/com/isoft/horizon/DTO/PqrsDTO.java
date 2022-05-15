@@ -12,9 +12,6 @@ public class PqrsDTO {
     private String title;
     private String description;
     private String category;
-
-    private PersonDTO person;
-
     private Long personId;
 
     public PqrsDTO(String title, String description, String category, Long personId) {
@@ -28,5 +25,7 @@ public class PqrsDTO {
         this.title = pqrs.getTitle();
         this.category = pqrs.getCategory();
         this.description = pqrs.getDescription();
+        this.id = pqrs.getId();
+        personId = pqrs.getPerson().getId();
     }
 }

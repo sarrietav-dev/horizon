@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/pqrs")
@@ -28,8 +29,8 @@ public class PQRSController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PQRS>> getAll() {
-        return ResponseEntity.ok(pqrsService.getAll());
+    public ResponseEntity<List<PqrsDTO>> getAll() {
+        return ResponseEntity.ok(pqrsService.getAll().stream().map(PqrsDTO::new).collect(Collectors.toList()));
     }
 
     @PostMapping("/")
