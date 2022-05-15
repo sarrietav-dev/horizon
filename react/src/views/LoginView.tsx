@@ -1,21 +1,18 @@
 import TheLoginForm from "@/components/TheLoginForm";
-import {authenticateUser} from "@/services/auth";
 import {useNavigate} from "react-router-dom";
 import {FormEvent} from "react";
-import tokenService from "@/services/tokenService";
+import {useAuth} from "@/context/authContext";
 
 const LoginView = () => {
   const navigate = useNavigate();
+  const auth = useAuth();
 
   const handleSubmit = async (e: FormEvent, email: string, password: string) => {
     e.preventDefault();
 
-    const {accessToken, refreshToken} = await authenticateUser(email, password);
-
-    tokenService.accessToken = accessToken;
-    tokenService.refreshToken = refreshToken;
-
-    navigate("/", {replace: true});
+    auth.signIn({email, password}, () =>
+      navigate("/", {replace: true})
+    );
   }
 
   return <main className="d-flex justify-content-center align-items-center vh-100">
