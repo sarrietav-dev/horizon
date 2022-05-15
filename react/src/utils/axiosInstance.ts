@@ -39,11 +39,11 @@ axiosInstance.interceptors.response.use(
 
     try {
       const response = await axios.get("/auth/token", {
-        headers: {Authorization: `Bearer ${tokenService.refreshToken}`},
+        headers: { Authorization: `Bearer ${tokenService.refreshToken}` },
         baseURL,
       });
 
-      const {access_token} = response.headers;
+      const { access_token } = response.headers;
 
       tokenService.accessToken = access_token;
 

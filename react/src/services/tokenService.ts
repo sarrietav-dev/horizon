@@ -23,12 +23,12 @@ class TokenService {
   }
 
   get tokensExist() {
-    return this.accessToken !== null && this.refreshToken !== null
+    return this.accessToken !== null && this.refreshToken !== null;
   }
 
   deleteTokens() {
-    this.accessToken = ""
-    this.refreshToken = ""
+    this.accessToken = "";
+    this.refreshToken = "";
   }
 }
 

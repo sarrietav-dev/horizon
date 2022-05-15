@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 
 const useTokens = () => {
   const localStorageAccessToken = localStorage.getItem("accessToken");
@@ -7,7 +7,7 @@ const useTokens = () => {
   const [accessToken, setAccessToken] = useState(localStorageAccessToken);
   const [refreshToken, setRefreshToken] = useState(localStorageRefreshToken);
 
-  type SetTokensWrapperProps = { accessToken: string, refreshToken: string };
+  type SetTokensWrapperProps = { accessToken: string; refreshToken: string };
   const setTokensWrapper = (props: SetTokensWrapperProps) => {
     if (props.accessToken) {
       localStorage.setItem("accessToken", props.accessToken);
@@ -17,11 +17,12 @@ const useTokens = () => {
       localStorage.setItem("refreshToken", props.refreshToken);
       setRefreshToken(props.refreshToken);
     }
-  }
+  };
 
   return {
-    tokens: {accessToken, refreshToken}, setTokens: setTokensWrapper
-  }
-}
+    tokens: { accessToken, refreshToken },
+    setTokens: setTokensWrapper,
+  };
+};
 
 export default useTokens;

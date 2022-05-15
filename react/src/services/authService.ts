@@ -1,7 +1,7 @@
 import qs from "qs";
 import axiosInstance from "@/utils/axiosInstance";
-import {FailedAuthenticationException} from "@/services/exceptions/FailedAuthenticationException";
-import {Credentials} from "@/types/Credentials";
+import { FailedAuthenticationException } from "@/services/exceptions/FailedAuthenticationException";
+import { Credentials } from "@/types/Credentials";
 
 const RESOURCE_URL = "/auth";
 
@@ -23,10 +23,10 @@ export const authenticateUser = async (credentials: Credentials) => {
     }
   );
 
-  const {headers, status} = response;
+  const { headers, status } = response;
 
   if (status === 200) {
-    const {access_token, refresh_token} = headers;
+    const { access_token, refresh_token } = headers;
     return {
       accessToken: access_token,
       refreshToken: refresh_token,
