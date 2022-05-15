@@ -9,12 +9,10 @@ import co.com.isoft.horizon.services.implementations.PqrsServiceImplementation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pqrs")
@@ -27,6 +25,11 @@ public class PQRSController {
     public PQRSController(PqrsServiceImplementation pqrsServiceImplementation, UserService userService) {
         this.pqrsService = pqrsServiceImplementation;
         this.userService = userService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PQRS>> getAll() {
+        return ResponseEntity.ok(pqrsService.getAll());
     }
 
     @PostMapping("/")
