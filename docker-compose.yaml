@@ -2,12 +2,12 @@ version: "1"
 
 services:
   app:
-    build: ./vue
+    build: ./react
     container_name: app
     ports:
       - 80:80
     volumes:
-      - ./vue/nginx.conf:/etc/nginx/nginx.conf
+      - ./react/nginx.conf:/etc/nginx/nginx.conf
     depends_on:
       - api
   api:
