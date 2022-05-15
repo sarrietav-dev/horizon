@@ -1,6 +1,5 @@
 import axios from "axios";
-import { useAuthStore } from "@/stores/authStore";
-import { useRouter } from "vue-router";
+import tokenService from "@/services/tokenService";
 
 const baseURL = "/api";
 
@@ -15,7 +14,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (req) => {
-    const auth = useAuthStore();
+    const auth = tokenService;
 
     if (req.headers) {
       req.headers.Authorization = `Bearer ${auth.accessToken}`;
@@ -27,29 +26,26 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
-    const auth = useAuthStore();
-    const router = useRouter();
-
     if (error.response.status !== 401) {
       return Promise.reject(error);
     }
 
     try {
       const response = await axios.get("/auth/token", {
-        headers: { Authorization: `Bearer ${auth.refreshToken}` },
+        headers: {Authorization: `Bearer ${tokenService.refreshToken}`},
         baseURL,
       });
 
-      const { access_token } = response.headers;
+      const {access_token} = response.headers;
 
-      auth.setAccessToken(access_token);
+      tokenService.accessToken = access_token;
 
       error.response.config.headers["Authorization"] = `Bearer ${access_token}`;
 
       return axiosInstance(error.response.config);
     } catch (error) {
-      auth.deleteTokens();
-      await router.replace("/login");
+      tokenService.deleteTokens();
+      window.location.replace("/login");
       return Promise.reject(error);
     }
   }
