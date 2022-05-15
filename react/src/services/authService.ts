@@ -1,6 +1,7 @@
 import qs from "qs";
 import axiosInstance from "@/utils/axiosInstance";
 import {FailedAuthenticationException} from "@/services/exceptions/FailedAuthenticationException";
+import {Credentials} from "@/types/Credentials";
 
 const RESOURCE_URL = "/auth";
 
@@ -9,11 +10,8 @@ const RESOURCE_URL = "/auth";
  * @returns The access and the refresh token.
  * @throws {FailedAuthenticationException} if the email or password is incorrect.
  */
-export const authenticateUser = async (email: string, password: string) => {
-  const queryString = qs.stringify({
-    email,
-    password,
-  });
+export const authenticateUser = async (credentials: Credentials) => {
+  const queryString = qs.stringify(credentials);
 
   const response = await axiosInstance.post(
     `${RESOURCE_URL}/login`,
