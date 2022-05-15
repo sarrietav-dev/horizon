@@ -1,11 +1,12 @@
-import React, {useState} from "react";
+import React from "react";
 import {authenticateUser} from "@/services/authService";
 import {Credentials} from "@/types/Credentials";
 import tokenService from "@/services/tokenService";
+import useTokens from "@/hooks/useTokens";
 
 
 interface AuthContextType {
-  isAuth: boolean;
+  isAuth: () => boolean;
   signIn: (credentials: Credentials, callback: VoidFunction) => void
   signOut: (callback: VoidFunction) => void;
 }
@@ -15,24 +16,20 @@ const AuthContext = React.createContext<AuthContextType>(null!);
 type AuthProviderProps = { children: React.ReactNode };
 
 const AuthProvider = ({children}: AuthProviderProps) => {
-  const [isAuth, setIsAuth] = useState(false);
+  const {tokens, setTokens} = useTokens();
+
+  const isAuth = () => tokens.refreshToken !== null && tokens.accessToken !== null;
 
   const signIn = async (credentials: Credentials, callback: VoidFunction) => {
     const {accessToken, refreshToken} = await authenticateUser(credentials);
 
-    tokenService.accessToken = accessToken;
-    tokenService.refreshToken = refreshToken;
-
-    setIsAuth(true);
+    setTokens({accessToken, refreshToken});
 
     callback();
-
   }
 
   const signOut = (callback: VoidFunction) => {
     tokenService.deleteTokens();
-
-    setIsAuth(false);
 
     callback();
   };

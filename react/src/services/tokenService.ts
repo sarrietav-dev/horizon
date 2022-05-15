@@ -22,6 +22,10 @@ class TokenService {
     localStorage.setItem(this.refreshTokenKey, token);
   }
 
+  get tokensExist() {
+    return this.accessToken !== null && this.refreshToken !== null
+  }
+
   deleteTokens() {
     this.accessToken = ""
     this.refreshToken = ""
