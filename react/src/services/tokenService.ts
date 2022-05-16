@@ -5,7 +5,7 @@ class TokenService {
   get accessToken() {
     const accessToken = localStorage.getItem(this.accessTokenKey);
     if (!accessToken) throw new Error(`${this.accessTokenKey} not set`);
-    return JSON.parse(accessToken);
+    return accessToken;
   }
 
   set accessToken(token: string) {
@@ -15,7 +15,7 @@ class TokenService {
   get refreshToken() {
     const refreshToken = localStorage.getItem(this.refreshTokenKey);
     if (!refreshToken) throw new Error(`${this.refreshTokenKey} not set`);
-    return JSON.parse(refreshToken);
+    return refreshToken;
   }
 
   set refreshToken(token: string) {
@@ -27,8 +27,8 @@ class TokenService {
   }
 
   deleteTokens() {
-    this.accessToken = "";
-    this.refreshToken = "";
+    localStorage.removeItem(this.accessTokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
   }
 }
 
