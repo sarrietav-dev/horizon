@@ -15,7 +15,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (req) => {
     try {
-      if (req.headers && tokenService.accessToken) {
+      if (req.headers) {
         req.headers.Authorization = `Bearer ${tokenService.accessToken}`;
       }
       return req;
