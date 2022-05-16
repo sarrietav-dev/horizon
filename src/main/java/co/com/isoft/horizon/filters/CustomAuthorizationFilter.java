@@ -2,6 +2,7 @@ package co.com.isoft.horizon.filters;
 
 import co.com.isoft.horizon.utils.TokenMissingException;
 import co.com.isoft.horizon.utils.TokenService;
+import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +48,12 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 filterChain.doFilter(request, response);
             } catch (TokenMissingException e) {
                 filterChain.doFilter(request, response);
+            } catch (TokenExpiredException e) {
+                Map<String, String> payload = new HashMap<>();
+                payload.put("error", e.getMessage());
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setStatus(401);
+                new ObjectMapper().writeValue(response.getOutputStream(), payload);
             } catch (Exception e) {
                 log.error("Logging error: {}", e.getMessage());
                 Map<String, String> payload = new HashMap<>();
