@@ -10,7 +10,13 @@ const HomeView = () => {
     pqrsService.getAll().then((response) => setPqrsList(response));
   }, []);
 
-  return pqrsList.map((pqrs) => <PqrsCard pqrs={pqrs} key={pqrs.id} />);
+  return (
+    <main className="px-5 py-5">
+      {pqrsList.map((pqrs) => (
+        <PqrsCard pqrs={pqrs} key={pqrs.id} />
+      ))}
+    </main>
+  );
 };
 
 export default HomeView;
