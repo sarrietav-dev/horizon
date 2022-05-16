@@ -7,7 +7,7 @@ type PqrsCardProps = {
 
 const PqrsCard = ({ pqrs }: PqrsCardProps) => (
   <div className="card">
-    <div className="card-header d-flex justify-content-center">
+    <div className="card-header d-flex justify-content-between">
       <h6>Created by: {pqrs.personId}</h6>
       <h6>Status: Completed</h6>
     </div>
