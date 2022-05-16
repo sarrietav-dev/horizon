@@ -7,7 +7,9 @@ const HomeView = () => {
   const [pqrsList, setPqrsList] = useState<PQRS[]>([]);
 
   useEffect(() => {
-    pqrsService.getAll().then((response) => setPqrsList(response));
+    pqrsService
+      .getAll()
+      .then((response) => setPqrsList(Array.isArray(response) ? response : []));
   }, []);
 
   return (

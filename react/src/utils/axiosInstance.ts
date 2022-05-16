@@ -47,9 +47,7 @@ axiosInstance.interceptors.response.use(
 
       tokenService.accessToken = access_token;
 
-      error.response.config.headers["Authorization"] = `Bearer ${access_token}`;
-
-      return axiosInstance(error.response.config);
+      return axiosInstance(error.config);
     } catch (error) {
       tokenService.deleteTokens();
       window.location.replace("/login");

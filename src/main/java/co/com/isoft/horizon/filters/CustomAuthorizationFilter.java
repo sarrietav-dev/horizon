@@ -17,7 +17,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Slf4j
@@ -39,9 +42,9 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 DecodedJWT decodedJWT = tokenService.decodeJWT(token);
 
                 String email = decodedJWT.getSubject();
-                String[] roles = decodedJWT.getClaim("role").asArray(String.class);
+                String role = String.valueOf(decodedJWT.getClaim("role")).replaceAll("\"", "");
                 Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                Arrays.stream(roles).forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
+                authorities.add(new SimpleGrantedAuthority(role));
 
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
