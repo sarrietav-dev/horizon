@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,7 @@ public class PQRSController {
             User currentAuthenticatedUser = userService.getUser(userEmail);
             PQRS pqrs = new PQRS(dto);
             pqrs.setPerson(currentAuthenticatedUser.getUserData());
+            pqrs.setCreationDate(new Date());
             PqrsDTO responseDTO = new PqrsDTO(pqrsService.save(pqrs));
 
             return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);

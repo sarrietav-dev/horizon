@@ -4,6 +4,7 @@ import co.com.isoft.horizon.DTO.PqrsDTO;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,8 @@ public class PQRS {
     private String title;
     private String description;
     private String category;
+
+    private Date creationDate;
 
     @ManyToOne
     @JoinColumn(name = "person_id")
@@ -31,6 +34,13 @@ public class PQRS {
         this.description = description;
         this.category = category;
         this.person = person;
+    }
+
+    public PQRS(String title, String description, String category, Date creationDate) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.creationDate = creationDate;
     }
 
     public PQRS(PqrsDTO dto) {
