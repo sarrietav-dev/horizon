@@ -48,7 +48,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         JWTCreator.Builder accessBuilder = JWT.create()
                 .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("role", authorityList);
 
