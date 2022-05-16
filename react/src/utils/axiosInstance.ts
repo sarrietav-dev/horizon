@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
     }
 
     try {
-      const response = await axios.get("/auth/token", {
+      const response = await axios.get("/api/auth/token", {
         headers: { Authorization: `Bearer ${tokenService.refreshToken}` },
         baseURL,
       });
