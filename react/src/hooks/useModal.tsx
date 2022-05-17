@@ -17,7 +17,7 @@ const Backdrop = styled.div`
 
 const useModal = (children: JSX.Element) => {
   const modalElement = ReactDOM.createPortal(
-    <Backdrop>{children}</Backdrop>,
+    <Backdrop onClick={() => hideModal()}>{children}</Backdrop>,
     document.getElementById("modal-root")!
   );
 
