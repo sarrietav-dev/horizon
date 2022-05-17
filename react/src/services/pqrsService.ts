@@ -15,7 +15,7 @@ const create = async ({
   title: string;
   description: string;
 }) => {
-  const response = await axiosInstance.post<PQRS>(resourcePath + "/", {
+  const response = await axiosInstance.post<PQRS>(resourcePath, {
     title,
     description,
   });

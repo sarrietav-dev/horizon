@@ -34,7 +34,7 @@ public class PQRSController {
         return ResponseEntity.ok(pqrsService.getAll().stream().map(PqrsDTO::new).collect(Collectors.toList()));
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> createPQRS(@RequestBody PqrsDTO dto, Principal principal) {
         try {
             String userEmail = principal.getName();
