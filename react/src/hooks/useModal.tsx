@@ -1,35 +1,41 @@
-import { useState } from "react";
-import styled from "styled-components";
-import ReactDOM from "react-dom";
+import {useState} from "react";
+import Modal from "react-bootstrap/Modal";
 
-const Backdrop = styled.div`
-  height: 100vh;
-  width: 100vh;
-  background-color: #000;
-  opacity: 0.6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: all 0.3s ease-in-out;
-  overflow: hidden;
-  z-index: 999;
-`;
-
-const useModal = (children: JSX.Element) => {
-  const modalElement = ReactDOM.createPortal(
-    <Backdrop onClick={() => hideModal()}>{children}</Backdrop>,
-    document.getElementById("modal-root")!
-  );
-
-  const [modal, setModal] = useState<JSX.Element | null>();
+/**
+ * Handles the creation and visibility of a modal.
+ *
+ * The modal must be rendered inside the component that will be used, or it won't be rendered.
+ *
+ * @param children The component that will be rendered inside the modal.
+ * @param config Extra parameters to customise the appearance of the modal like the title and the footer elements.
+ * @return the modals and two methods to show and to hide the modal.
+ *
+ */
+const useModal = (
+  children: JSX.Element,
+  config?: { title?: string; modalFooter?: JSX.Element }
+) => {
+  const [show, setShow] = useState(false);
 
   const showModal = () => {
-    setModal(modalElement);
+    setShow(true);
   };
 
   const hideModal = () => {
-    setModal(null);
+    setShow(false);
   };
+
+  const modal = (
+    <Modal show={show} onHide={hideModal} centered scrollable backdrop>
+      {config?.title && (
+        <Modal.Header closeButton>
+          <Modal.Title>{config.title}</Modal.Title>
+        </Modal.Header>
+      )}
+      <Modal.Body>{children}</Modal.Body>
+      {config?.modalFooter && <Modal.Footer>{config.modalFooter}</Modal.Footer>}
+    </Modal>
+  );
 
   return {
     modal,
