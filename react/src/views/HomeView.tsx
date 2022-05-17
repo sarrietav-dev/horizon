@@ -30,9 +30,7 @@ const HomeView = () => {
   return (
     <main className="px-5 py-5">
       {modal}
-      {pqrsList.map((pqrs) => (
-        <PqrsCard pqrs={pqrs} key={pqrs.id} />
-      ))}
+      <PQRSList list={pqrsList} />
       <CreateButton onClick={() => showModal()} />
     </main>
   );
@@ -49,5 +47,13 @@ const CreateButton = ({ onClick }: { onClick: () => void }) => {
     </div>
   );
 };
+
+const PQRSList = ({ list }: { list: PQRS[] }) => (
+  <>
+    {list.map((pqrs) => (
+      <PqrsCard pqrs={pqrs} key={pqrs.id} />
+    ))}
+  </>
+);
 
 export default HomeView;
