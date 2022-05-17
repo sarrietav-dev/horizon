@@ -40,7 +40,10 @@ public class PQRSController {
             String userEmail = principal.getName();
             User currentAuthenticatedUser = userService.getUser(userEmail);
             PQRS pqrs = new PQRS(dto);
+
+            log.info("Setting the person {} to the PQRS {}", currentAuthenticatedUser.getUserData().getName(), dto.getTitle());
             pqrs.setPerson(currentAuthenticatedUser.getUserData());
+
             pqrs.setCreationDate(new Date());
             PqrsDTO responseDTO = new PqrsDTO(pqrsService.save(pqrs));
 
