@@ -8,4 +8,19 @@ const getAll = async () => {
   return response.data;
 };
 
-export default { getAll };
+const create = async ({
+  title,
+  description,
+}: {
+  title: string;
+  description: string;
+}) => {
+  const response = await axiosInstance.post<PQRS>(resourcePath + "/", {
+    title,
+    description,
+  });
+
+  return response.data;
+};
+
+export default { getAll, create };

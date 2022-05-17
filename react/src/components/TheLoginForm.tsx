@@ -1,10 +1,7 @@
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
+import { FormProps } from "@/types/FormProps";
 
-interface TheLoginFormProps {
-  onSubmit: (e: FormEvent, ...args: string[]) => void;
-}
-
-const TheLoginForm: React.FC<TheLoginFormProps> = ({ onSubmit }) => {
+const TheLoginForm: React.FC<FormProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
