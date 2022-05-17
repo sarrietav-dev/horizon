@@ -1,5 +1,6 @@
 import { FormProps } from "@/types/FormProps";
 import { useState } from "react";
+import { Button } from "react-bootstrap";
 
 const PqrsCreationForm = ({ onSubmit }: FormProps) => {
   const [title, setTitle] = useState("");
@@ -24,7 +25,7 @@ const PqrsCreationForm = ({ onSubmit }: FormProps) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="description">Descripcion</label>
+          <label htmlFor="description">Descripción</label>
           <textarea
             name="description"
             id="description"
@@ -32,6 +33,9 @@ const PqrsCreationForm = ({ onSubmit }: FormProps) => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
+        </div>
+        <div className="d-flex justify-content-end">
+          <Button type="submit">Crear</Button>
         </div>
       </form>
     </div>

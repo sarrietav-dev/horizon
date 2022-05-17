@@ -7,8 +7,15 @@ import PqrsCreationForm from "@/components/PqrsCreationForm";
 
 const HomeView = () => {
   const [pqrsList, setPqrsList] = useState<PQRS[]>([]);
-  const { modal, showModal } = useModal(
-    <PqrsCreationForm onSubmit={() => 0} />,
+  const { modal, showModal, hideModal } = useModal(
+    <PqrsCreationForm
+      onSubmit={async (e, title, description) => {
+        e.preventDefault();
+        const newPqrs = await pqrsService.create({ description, title });
+        setPqrsList((prev) => [...prev, newPqrs]);
+        hideModal();
+      }}
+    />,
     {
       title: "Crear una PQRS",
     }
