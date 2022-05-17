@@ -51,7 +51,9 @@ const CreateButton = ({ onClick }: { onClick: () => void }) => {
 const PQRSList = ({ list }: { list: PQRS[] }) => (
   <>
     {list.map((pqrs) => (
-      <PqrsCard pqrs={pqrs} key={pqrs.id} />
+      <div className="my-5" key={pqrs.id}>
+        <PqrsCard pqrs={pqrs} />
+      </div>
     ))}
   </>
 );
