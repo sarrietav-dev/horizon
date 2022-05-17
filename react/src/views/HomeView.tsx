@@ -42,7 +42,7 @@ const CreateButton = ({ onClick }: { onClick: () => void }) => {
   return (
     <div
       style={{ height: "10vh", width: "10vh", bottom: 30, right: 30 }}
-      className="position-absolute rounded-circle bg-primary d-flex justify-content-center align-items-center"
+      className="position-fixed rounded-circle bg-primary d-flex justify-content-center align-items-center"
       onClick={onClick}
     >
       <i className="bi bi-plus text-white fs-1"></i>
