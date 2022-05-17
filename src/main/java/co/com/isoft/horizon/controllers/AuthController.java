@@ -37,6 +37,8 @@ public class AuthController {
     @GetMapping("/token")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
+            log.info("Refreshing access token.");
+
             TokenService tokenService = new TokenUtils();
 
             String refreshToken = tokenService.extractAuthorizationToken(request);
@@ -62,7 +64,7 @@ public class AuthController {
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             new ObjectMapper().writeValue(response.getOutputStream(), payload);
         } catch (TokenMissingException e) {
-            log.error("Refresh token missing");
+            log.error("Refresh token missing!");
             response.setStatus(HttpStatus.BAD_REQUEST.value());
             new ObjectMapper().writeValue(response.getOutputStream(), "Refresh token missing");
         }
