@@ -15,10 +15,15 @@ public class PQRS {
     private Long id;
 
     private String title;
+
     private String description;
+
     private String category;
 
     private Date creationDate;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "person_id")
@@ -41,6 +46,14 @@ public class PQRS {
         this.description = description;
         this.category = category;
         this.creationDate = creationDate;
+    }
+
+    public PQRS(String title, String description, String category, Date creationDate, Status status) {
+        this.title = title;
+        this.description = description;
+        this.category = category;
+        this.creationDate = creationDate;
+        this.status = status;
     }
 
     public PQRS(PqrsDTO dto) {
