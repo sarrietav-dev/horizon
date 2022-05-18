@@ -7,34 +7,38 @@ import java.util.List;
 
 @Entity
 public class Proprietary extends Person {
-    @OneToMany(mappedBy = "proprietary")
-    private List<Apartment> properties;
+  @OneToMany(mappedBy = "proprietary")
+  private List<Apartment> properties;
 
-    @OneToMany(mappedBy = "person")
-    private List<PQRS> pqrs;
+  @OneToMany(mappedBy = "person")
+  private List<PQRS> pqrs;
 
-    public Proprietary(String name, String surname, String phoneNumber, Date birthDate, User authData, List<Apartment> properties) {
-            super(name, surname, phoneNumber, birthDate, authData);
-        this.properties = properties;
-    }
+  public Proprietary(
+      String name,
+      String surname,
+      String phoneNumber,
+      Date birthDate,
+      User authData,
+      List<Apartment> properties) {
+    super(name, surname, phoneNumber, birthDate, authData);
+    this.properties = properties;
+  }
 
-    protected Proprietary() {
-    }
+  protected Proprietary() {}
 
+  public List<Apartment> getProperties() {
+    return properties;
+  }
 
-    public List<Apartment> getProperties() {
-        return properties;
-    }
+  public void setProperties(List<Apartment> properties) {
+    this.properties = properties;
+  }
 
-    public void setProperties(List<Apartment> properties) {
-        this.properties = properties;
-    }
+  public List<PQRS> getPqrs() {
+    return pqrs;
+  }
 
-    public List<PQRS> getPqrs() {
-        return pqrs;
-    }
-
-    public void setPqrs(List<PQRS> pqrs) {
-        this.pqrs = pqrs;
-    }
+  public void setPqrs(List<PQRS> pqrs) {
+    this.pqrs = pqrs;
+  }
 }

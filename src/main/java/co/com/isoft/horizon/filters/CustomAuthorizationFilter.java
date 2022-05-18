@@ -22,52 +22,55 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-
 @Slf4j
 public class CustomAuthorizationFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
+  private final TokenService tokenService;
 
-    public CustomAuthorizationFilter(TokenService tokenService) {
-        this.tokenService = tokenService;
+  public CustomAuthorizationFilter(TokenService tokenService) {
+    this.tokenService = tokenService;
+  }
+
+  @Override
+  protected void doFilterInternal(
+      HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+      throws ServletException, IOException {
+    if (request.getServletPath().equals("/api/auth/login")
+        || request.getServletPath().equals("/api/auth/token")) {
+      filterChain.doFilter(request, response);
+    } else {
+      try {
+        log.info("Extracting the token from the request.");
+        String token = tokenService.extractAuthorizationToken(request);
+        DecodedJWT decodedJWT = tokenService.decodeJWT(token);
+
+        String email = decodedJWT.getSubject();
+        String role = String.valueOf(decodedJWT.getClaim("role")).replaceAll("\"", "");
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role));
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+            new UsernamePasswordAuthenticationToken(email, null, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+        filterChain.doFilter(request, response);
+      } catch (TokenMissingException e) {
+        log.error(e.getMessage());
+        filterChain.doFilter(request, response);
+      } catch (TokenExpiredException e) {
+        log.error(e.getMessage());
+        Map<String, String> payload = new HashMap<>();
+        payload.put("error", e.getMessage());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(401);
+        new ObjectMapper().writeValue(response.getOutputStream(), payload);
+      } catch (Exception e) {
+        log.error(e.getMessage());
+        Map<String, String> payload = new HashMap<>();
+        payload.put("error", e.getMessage());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(400);
+        new ObjectMapper().writeValue(response.getOutputStream(), payload);
+      }
     }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getServletPath().equals("/api/auth/login") || request.getServletPath().equals("/api/auth/token")) {
-            filterChain.doFilter(request, response);
-        } else {
-            try {
-                log.info("Extracting the token from the request.");
-                String token = tokenService.extractAuthorizationToken(request);
-                DecodedJWT decodedJWT = tokenService.decodeJWT(token);
-
-                String email = decodedJWT.getSubject();
-                String role = String.valueOf(decodedJWT.getClaim("role")).replaceAll("\"", "");
-                Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(role));
-
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, null, authorities);
-                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                filterChain.doFilter(request, response);
-            } catch (TokenMissingException e) {
-                log.error(e.getMessage());
-                filterChain.doFilter(request, response);
-            } catch (TokenExpiredException e) {
-                log.error(e.getMessage());
-                Map<String, String> payload = new HashMap<>();
-                payload.put("error", e.getMessage());
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setStatus(401);
-                new ObjectMapper().writeValue(response.getOutputStream(), payload);
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                Map<String, String> payload = new HashMap<>();
-                payload.put("error", e.getMessage());
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setStatus(400);
-                new ObjectMapper().writeValue(response.getOutputStream(), payload);
-            }
-        }
-    }
+  }
 }

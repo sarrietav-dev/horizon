@@ -8,11 +8,12 @@ import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import java.util.List;
 
 public interface PqrsService {
-    List<PQRS> getAll();
+  List<PQRS> getAll();
 
-    PQRS save(PQRS pqrs);
+  PQRS save(PQRS pqrs);
 
-    PQRS changeStatus(PQRS pqrs, Status status) throws ResourceNotFoundException, ForbiddenStatusChangeException;
+  PQRS changeStatus(PQRS pqrs, Status status)
+      throws ResourceNotFoundException, ForbiddenStatusChangeException;
 
-    PQRS get(Long id) throws ResourceNotFoundException;
+  PQRS get(Long id) throws ResourceNotFoundException;
 }

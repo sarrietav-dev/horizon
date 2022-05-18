@@ -14,13 +14,13 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @Column(unique = true)
-    private String name;
+  @Column(unique = true)
+  private String name;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
-    private Collection<User> users;
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+  private Collection<User> users;
 }

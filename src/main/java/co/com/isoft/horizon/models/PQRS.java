@@ -11,72 +11,72 @@ import java.util.List;
 @Entity
 @Data
 public class PQRS {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    private String title;
+  private String title;
 
-    private String description;
+  private String description;
 
-    private String category;
+  private String category;
 
-    private Date creationDate;
+  private Date creationDate;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+  @Enumerated(EnumType.STRING)
+  private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person person;
+  @ManyToOne
+  @JoinColumn(name = "person_id")
+  private Person person;
 
-    private Float rating;
+  private Float rating;
 
-    @OneToMany(mappedBy = "pqrs")
-    private List<Reply> replies;
+  @OneToMany(mappedBy = "pqrs")
+  private List<Reply> replies;
 
-    public PQRS(String title, String description, String category, Person person) {
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.person = person;
+  public PQRS(String title, String description, String category, Person person) {
+    this.title = title;
+    this.description = description;
+    this.category = category;
+    this.person = person;
+  }
+
+  public PQRS(String title, String description, String category, Date creationDate) {
+    this.title = title;
+    this.description = description;
+    this.category = category;
+    this.creationDate = creationDate;
+  }
+
+  public PQRS(String title, String description, String category, Date creationDate, Status status) {
+    this.title = title;
+    this.description = description;
+    this.category = category;
+    this.creationDate = creationDate;
+    this.status = status;
+  }
+
+  public PQRS(PqrsDTO dto) {
+    this.title = dto.getTitle();
+    this.category = dto.getCategory();
+    this.description = dto.getDescription();
+    this.status = dto.getStatus();
+  }
+
+  protected PQRS() {}
+
+  /**
+   * Set the current status to a new status. The new status can't be one that happens before the
+   * actual status value in the hierarchy.
+   *
+   * @throws ForbiddenStatusChangeException if the new status comes before the new status.
+   */
+  public void setStatus(Status status) throws ForbiddenStatusChangeException {
+    if (status.getHierarchy() < this.getStatus().getHierarchy()) {
+      throw new ForbiddenStatusChangeException(
+          String.format("Can't change from %s to %s.", this.getStatus().name(), status.name()));
     }
-
-    public PQRS(String title, String description, String category, Date creationDate) {
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.creationDate = creationDate;
-    }
-
-    public PQRS(String title, String description, String category, Date creationDate, Status status) {
-        this.title = title;
-        this.description = description;
-        this.category = category;
-        this.creationDate = creationDate;
-        this.status = status;
-    }
-
-    public PQRS(PqrsDTO dto) {
-        this.title = dto.getTitle();
-        this.category = dto.getCategory();
-        this.description = dto.getDescription();
-        this.status = dto.getStatus();
-    }
-
-    protected PQRS() {
-    }
-
-    /**
-     * Set the current status to a  new status.
-     * The new status can't be one that happens before the actual status value in the hierarchy.
-     *
-     * @throws ForbiddenStatusChangeException if the new status comes before the new status.
-     */
-    public void setStatus(Status status) throws ForbiddenStatusChangeException {
-        if (status.getHierarchy() < this.getStatus().getHierarchy()) {
-            throw new ForbiddenStatusChangeException(String.format("Can't change from %s to %s.", this.getStatus().name(), status.name()));
-        }
-        this.status = status;
-    }
+    this.status = status;
+  }
 }

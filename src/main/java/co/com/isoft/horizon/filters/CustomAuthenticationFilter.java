@@ -22,42 +22,54 @@ import java.util.Date;
 @Slf4j
 @AllArgsConstructor
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private final AuthenticationManager authenticationManager;
-    private final TokenService tokenService;
+  private final AuthenticationManager authenticationManager;
+  private final TokenService tokenService;
 
-    @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
+  @Override
+  public Authentication attemptAuthentication(
+      HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
+    String email = request.getParameter("email");
+    String password = request.getParameter("password");
 
-        log.info("Email is: {}", email);
-        log.info("Password is: {}", password);
+    log.info("Email is: {}", email);
+    log.info("Password is: {}", password);
 
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-        return authenticationManager.authenticate(authenticationToken);
-    }
+    UsernamePasswordAuthenticationToken authenticationToken =
+        new UsernamePasswordAuthenticationToken(email, password);
+    return authenticationManager.authenticate(authenticationToken);
+  }
 
-    @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        User user = (User) authResult.getPrincipal();
+  @Override
+  protected void successfulAuthentication(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      FilterChain chain,
+      Authentication authResult)
+      throws IOException, ServletException {
+    User user = (User) authResult.getPrincipal();
 
-        String authorityList = user.getAuthorities().stream().findFirst().orElseThrow(() -> new ServletException("Authority not found")).getAuthority();
+    String authorityList =
+        user.getAuthorities().stream()
+            .findFirst()
+            .orElseThrow(() -> new ServletException("Authority not found"))
+            .getAuthority();
 
-        log.info("Creating access and refresh tokens for user: {}", user.getUsername());
+    log.info("Creating access and refresh tokens for user: {}", user.getUsername());
 
-        JWTCreator.Builder accessBuilder = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                .withIssuer(request.getRequestURL().toString())
-                .withClaim("role", authorityList);
+    JWTCreator.Builder accessBuilder =
+        JWT.create()
+            .withSubject(user.getUsername())
+            .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+            .withIssuer(request.getRequestURL().toString())
+            .withClaim("role", authorityList);
 
+    JWTCreator.Builder refreshBuilder =
+        JWT.create()
+            .withSubject(user.getUsername())
+            .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000))
+            .withIssuer(request.getRequestURL().toString());
 
-        JWTCreator.Builder refreshBuilder = JWT.create()
-                .withSubject(user.getUsername())
-                .withExpiresAt(new Date(System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000))
-                .withIssuer(request.getRequestURL().toString());
-
-        response.setHeader("access_token", tokenService.signJWT(accessBuilder));
-        response.setHeader("refresh_token", tokenService.signJWT(refreshBuilder));
-    }
+    response.setHeader("access_token", tokenService.signJWT(accessBuilder));
+    response.setHeader("refresh_token", tokenService.signJWT(refreshBuilder));
+  }
 }

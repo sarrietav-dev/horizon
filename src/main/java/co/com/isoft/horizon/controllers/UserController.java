@@ -17,44 +17,44 @@ import java.net.URI;
 @RequestMapping("/api/user")
 @Slf4j
 public class UserController {
-    final UserService userService;
+  final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+  public UserController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @PostMapping
+  public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
+    try {
+      User user = User.from(userDTO);
+
+      user.setRole(userService.getRole(userDTO.getRole()));
+
+      URI uri =
+          URI.create(
+              ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user").toUriString());
+
+      return ResponseEntity.created(uri).body(userService.saveUser(user));
+    } catch (ResourceNotFoundException e) {
+      log.error(e.getMessage());
+      return ResponseEntity.badRequest().body(e.getMessage());
     }
+  }
 
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
-        try {
-            User user = User.from(userDTO);
-
-            user.setRole(userService.getRole(userDTO.getRole()));
-
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user").toUriString());
-
-            return ResponseEntity.created(uri).body(userService.saveUser(user));
-        } catch (ResourceNotFoundException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
+  @PatchMapping("/{id}/role")
+  public ResponseEntity<User> updateRole(@RequestBody UpdateRoleForm body, @PathVariable Long id) {
+    try {
+      User newUser = userService.setRoleToUser(body.getRoleName(), id);
+      return ResponseEntity.accepted().body(newUser);
+    } catch (ResourceNotFoundException e) {
+      log.error(e.getMessage());
+      return ResponseEntity.notFound().build();
     }
+  }
 
-    @PatchMapping("/{id}/role")
-    public ResponseEntity<User> updateRole(@RequestBody UpdateRoleForm body, @PathVariable Long id) {
-        try {
-            User newUser = userService.setRoleToUser(body.getRoleName(), id);
-            return ResponseEntity.accepted().body(newUser);
-        } catch (ResourceNotFoundException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @Data
-    @AllArgsConstructor
-    static
-    class UpdateRoleForm {
-        private String roleName;
-    }
+  @Data
+  @AllArgsConstructor
+  static class UpdateRoleForm {
+    private String roleName;
+  }
 }

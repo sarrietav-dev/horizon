@@ -24,58 +24,63 @@ import java.util.stream.Collectors;
 @Slf4j
 public class PQRSController {
 
-    private final PqrsServiceImplementation pqrsService;
-    private final UserService userService;
+  private final PqrsServiceImplementation pqrsService;
+  private final UserService userService;
 
-    public PQRSController(PqrsServiceImplementation pqrsServiceImplementation, UserService userService) {
-        this.pqrsService = pqrsServiceImplementation;
-        this.userService = userService;
+  public PQRSController(
+      PqrsServiceImplementation pqrsServiceImplementation, UserService userService) {
+    this.pqrsService = pqrsServiceImplementation;
+    this.userService = userService;
+  }
+
+  @GetMapping
+  public ResponseEntity<List<PqrsDTO>> getAll() {
+    return ResponseEntity.ok(
+        pqrsService.getAll().stream().map(PqrsDTO::new).collect(Collectors.toList()));
+  }
+
+  @PostMapping
+  public ResponseEntity<?> createPQRS(@RequestBody PqrsDTO dto, Principal principal) {
+    try {
+      String userEmail = principal.getName();
+      User currentAuthenticatedUser = userService.getUser(userEmail);
+      PQRS pqrs = new PQRS(dto);
+
+      log.info(
+          "Setting the person {} to the PQRS {}",
+          currentAuthenticatedUser.getUserData().getName(),
+          dto.getTitle());
+      pqrs.setPerson(currentAuthenticatedUser.getUserData());
+
+      pqrs.setCreationDate(new Date());
+      PqrsDTO responseDTO = new PqrsDTO(pqrsService.save(pqrs));
+
+      return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
+    } catch (ResourceNotFoundException e) {
+      log.error(e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+  }
 
-    @GetMapping
-    public ResponseEntity<List<PqrsDTO>> getAll() {
-        return ResponseEntity.ok(pqrsService.getAll().stream().map(PqrsDTO::new).collect(Collectors.toList()));
+  @PatchMapping("/{id}/status")
+  public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody SetStatusForm status) {
+    try {
+      PQRS pqrs = pqrsService.get(Long.valueOf(id));
+      return ResponseEntity.ok(new PqrsDTO(pqrsService.changeStatus(pqrs, status.getStatus())));
+    } catch (ResourceNotFoundException e) {
+      log.error(e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    } catch (ForbiddenStatusChangeException e) {
+      log.error(e.getMessage());
+      return ResponseEntity.badRequest().body(e.getMessage());
+    } catch (NullPointerException e) {
+      log.error(e.getMessage());
+      return ResponseEntity.badRequest().body("Please check if any of the keys are correct.");
     }
+  }
 
-    @PostMapping
-    public ResponseEntity<?> createPQRS(@RequestBody PqrsDTO dto, Principal principal) {
-        try {
-            String userEmail = principal.getName();
-            User currentAuthenticatedUser = userService.getUser(userEmail);
-            PQRS pqrs = new PQRS(dto);
-
-            log.info("Setting the person {} to the PQRS {}", currentAuthenticatedUser.getUserData().getName(), dto.getTitle());
-            pqrs.setPerson(currentAuthenticatedUser.getUserData());
-
-            pqrs.setCreationDate(new Date());
-            PqrsDTO responseDTO = new PqrsDTO(pqrsService.save(pqrs));
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
-        } catch (ResourceNotFoundException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        }
-    }
-
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody SetStatusForm status) {
-        try {
-            PQRS pqrs = pqrsService.get(Long.valueOf(id));
-            return ResponseEntity.ok(new PqrsDTO(pqrsService.changeStatus(pqrs, status.getStatus())));
-        } catch (ResourceNotFoundException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (ForbiddenStatusChangeException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (NullPointerException e) {
-            log.error(e.getMessage());
-            return ResponseEntity.badRequest().body("Please check if any of the keys are correct.");
-        }
-    }
-
-    @Data
-    static class SetStatusForm {
-        private Status status;
-    }
+  @Data
+  static class SetStatusForm {
+    private Status status;
+  }
 }

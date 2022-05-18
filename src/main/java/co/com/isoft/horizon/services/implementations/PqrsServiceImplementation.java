@@ -18,32 +18,40 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 public class PqrsServiceImplementation implements PqrsService {
-    private final PQRSRepo pqrsRepo;
+  private final PQRSRepo pqrsRepo;
 
-    @Override
-    public List<PQRS> getAll() {
-        log.info("Getting all the PQRS");
-        return (List<PQRS>) pqrsRepo.findAll();
-    }
+  @Override
+  public List<PQRS> getAll() {
+    log.info("Getting all the PQRS");
+    return (List<PQRS>) pqrsRepo.findAll();
+  }
 
-    @Override
-    public PQRS save(PQRS pqrs) {
-        log.info("Saving the PQRS with title {}", pqrs.getTitle());
-        return pqrsRepo.save(pqrs);
-    }
+  @Override
+  public PQRS save(PQRS pqrs) {
+    log.info("Saving the PQRS with title {}", pqrs.getTitle());
+    return pqrsRepo.save(pqrs);
+  }
 
-    @Override
-    public PQRS changeStatus(PQRS pqrs, Status status) throws ResourceNotFoundException, ForbiddenStatusChangeException {
-        log.info("Changing the status of {} to {}", pqrs.getTitle(), status.name());
-        PQRS foundPQRS = pqrsRepo.findById(pqrs.getId()).orElseThrow(() -> new ResourceNotFoundException("The pqrs wasn't found"));
-        foundPQRS.setStatus(status);
-        return pqrsRepo.save(foundPQRS);
-    }
+  @Override
+  public PQRS changeStatus(PQRS pqrs, Status status)
+      throws ResourceNotFoundException, ForbiddenStatusChangeException {
+    log.info("Changing the status of {} to {}", pqrs.getTitle(), status.name());
+    PQRS foundPQRS =
+        pqrsRepo
+            .findById(pqrs.getId())
+            .orElseThrow(() -> new ResourceNotFoundException("The pqrs wasn't found"));
+    foundPQRS.setStatus(status);
+    return pqrsRepo.save(foundPQRS);
+  }
 
-    @Override
-    public PQRS get(Long id) throws ResourceNotFoundException {
-        log.info("Getting a PQRS with the id: {}", id);
-        return pqrsRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("The PQRS with the id %d was not found", id)));
-    }
-
+  @Override
+  public PQRS get(Long id) throws ResourceNotFoundException {
+    log.info("Getting a PQRS with the id: {}", id);
+    return pqrsRepo
+        .findById(id)
+        .orElseThrow(
+            () ->
+                new ResourceNotFoundException(
+                    String.format("The PQRS with the id %d was not found", id)));
+  }
 }

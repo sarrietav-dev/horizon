@@ -7,24 +7,22 @@ import javax.persistence.*;
 @Entity
 @Data
 public class Reply {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String content;
-    @ManyToOne
-    @MapsId
-    private PQRS pqrs;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Person createdBy;
+  private String content;
+  @ManyToOne @MapsId private PQRS pqrs;
 
-    public Reply(String content, PQRS pqrs, Person createdBy) {
-        this.content = content;
-        this.pqrs = pqrs;
-        this.createdBy = createdBy;
-    }
+  @ManyToOne
+  @JoinColumn(name = "person_id")
+  private Person createdBy;
 
-    protected Reply() {
-    }
+  public Reply(String content, PQRS pqrs, Person createdBy) {
+    this.content = content;
+    this.pqrs = pqrs;
+    this.createdBy = createdBy;
+  }
+
+  protected Reply() {}
 }

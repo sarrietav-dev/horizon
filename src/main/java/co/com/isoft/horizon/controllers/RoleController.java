@@ -17,21 +17,25 @@ import java.net.URI;
 @RequestMapping("/api/role")
 @Slf4j
 public class RoleController {
-    final UserService userService;
+  final UserService userService;
 
-    public RoleController(UserService userService) {
-        this.userService = userService;
-    }
+  public RoleController(UserService userService) {
+    this.userService = userService;
+  }
 
-    @PostMapping
-    ResponseEntity<Role> createRole(@RequestBody Role role) {
-        try {
-            Role newRole = userService.saveRole(role);
-            URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role/").toUriString());
-            return ResponseEntity.created(uri).body(newRole);
-        } catch (DuplicateResourceException e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
+  @PostMapping
+  ResponseEntity<Role> createRole(@RequestBody Role role) {
+    try {
+      Role newRole = userService.saveRole(role);
+      URI uri =
+          URI.create(
+              ServletUriComponentsBuilder.fromCurrentContextPath()
+                  .path("/api/role/")
+                  .toUriString());
+      return ResponseEntity.created(uri).body(newRole);
+    } catch (DuplicateResourceException e) {
+      log.error(e.getMessage());
+      throw new RuntimeException(e);
     }
+  }
 }

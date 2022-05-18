@@ -22,36 +22,47 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsService userDetailsService;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+  private final UserDetailsService userDetailsService;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
-    }
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        CustomAuthenticationFilter filter = new CustomAuthenticationFilter(authenticationManagerBean(), new TokenUtils());
-        filter.setFilterProcessesUrl("/api/auth/login");
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    CustomAuthenticationFilter filter =
+        new CustomAuthenticationFilter(authenticationManagerBean(), new TokenUtils());
+    filter.setFilterProcessesUrl("/api/auth/login");
 
-        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    http.csrf().disable();
+    http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/login", "/api/auth/token").permitAll();
-        http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/pqrs").hasAnyAuthority("ROLE_RESIDENT", "ROLE_ADMIN", "ROLE_PROPRIETARY");
-        http.authorizeRequests().antMatchers(HttpMethod.PATCH, "/api/user/**/role").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().anyRequest().authenticated();
+    http.authorizeRequests().antMatchers("/api/login", "/api/auth/token").permitAll();
+    http.authorizeRequests()
+        .antMatchers(HttpMethod.GET, "/api/pqrs")
+        .hasAnyAuthority("ROLE_RESIDENT", "ROLE_ADMIN", "ROLE_PROPRIETARY");
+    http.authorizeRequests()
+        .antMatchers(HttpMethod.PATCH, "/api/user/**/role")
+        .hasAnyAuthority("ROLE_ADMIN");
+    http.authorizeRequests()
+        .antMatchers(HttpMethod.POST, "/api/user")
+        .hasAnyAuthority("ROLE_ADMIN");
+    http.authorizeRequests()
+        .antMatchers(HttpMethod.POST, "/api/user/**")
+        .hasAnyAuthority("ROLE_ADMIN");
+    http.authorizeRequests().anyRequest().authenticated();
 
-        http.addFilter(filter);
-        http.addFilterBefore(new CustomAuthorizationFilter(new TokenUtils()), UsernamePasswordAuthenticationFilter.class);
-    }
+    http.addFilter(filter);
+    http.addFilterBefore(
+        new CustomAuthorizationFilter(new TokenUtils()),
+        UsernamePasswordAuthenticationFilter.class);
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 }

@@ -28,45 +28,47 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @Slf4j
 public class AuthController {
-    private final UserService userService;
+  private final UserService userService;
 
-    public AuthController(UserService userService) {
-        this.userService = userService;
+  public AuthController(UserService userService) {
+    this.userService = userService;
+  }
+
+  @GetMapping("/token")
+  public void refreshToken(HttpServletRequest request, HttpServletResponse response)
+      throws IOException {
+    try {
+      log.info("Refreshing access token.");
+
+      TokenService tokenService = new TokenUtils();
+
+      String refreshToken = tokenService.extractAuthorizationToken(request);
+      DecodedJWT decodedJWT = tokenService.decodeJWT(refreshToken);
+
+      String email = decodedJWT.getSubject();
+      User user = userService.getUser(email);
+
+      JWTCreator.Builder builder =
+          JWT.create()
+              .withSubject(user.getEmail())
+              .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
+              .withIssuer(request.getRequestURL().toString())
+              .withClaim("role", user.getRole().getName());
+
+      String accessToken = tokenService.signJWT(builder);
+
+      response.setHeader("access_token", accessToken);
+      response.setHeader("refresh_token", refreshToken);
+    } catch (ResourceNotFoundException e) {
+      log.error("Logging error: {}", e.getMessage());
+      Map<String, String> payload = new HashMap<>();
+      payload.put("error", e.getMessage());
+      response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+      new ObjectMapper().writeValue(response.getOutputStream(), payload);
+    } catch (TokenMissingException e) {
+      log.error("Refresh token missing!");
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      new ObjectMapper().writeValue(response.getOutputStream(), "Refresh token missing");
     }
-
-    @GetMapping("/token")
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            log.info("Refreshing access token.");
-
-            TokenService tokenService = new TokenUtils();
-
-            String refreshToken = tokenService.extractAuthorizationToken(request);
-            DecodedJWT decodedJWT = tokenService.decodeJWT(refreshToken);
-
-            String email = decodedJWT.getSubject();
-            User user = userService.getUser(email);
-
-            JWTCreator.Builder builder = JWT.create()
-                    .withSubject(user.getEmail())
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                    .withIssuer(request.getRequestURL().toString())
-                    .withClaim("role", user.getRole().getName());
-
-            String accessToken = tokenService.signJWT(builder);
-
-            response.setHeader("access_token", accessToken);
-            response.setHeader("refresh_token", refreshToken);
-        } catch (ResourceNotFoundException e) {
-            log.error("Logging error: {}", e.getMessage());
-            Map<String, String> payload = new HashMap<>();
-            payload.put("error", e.getMessage());
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            new ObjectMapper().writeValue(response.getOutputStream(), payload);
-        } catch (TokenMissingException e) {
-            log.error("Refresh token missing!");
-            response.setStatus(HttpStatus.BAD_REQUEST.value());
-            new ObjectMapper().writeValue(response.getOutputStream(), "Refresh token missing");
-        }
-    }
+  }
 }

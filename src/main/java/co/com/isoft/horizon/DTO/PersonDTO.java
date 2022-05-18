@@ -14,26 +14,26 @@ import java.util.Date;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type")
 @JsonSubTypes({@JsonSubTypes.Type(name = "Resident", value = ResidentDTO.class)})
 public abstract class PersonDTO {
-    protected Long id;
+  protected Long id;
 
-    protected String name;
-    protected String surname;
+  protected String name;
+  protected String surname;
 
-    protected String phoneNumber;
-    protected Date birthDate;
+  protected String phoneNumber;
+  protected Date birthDate;
 
-    protected UserDTO authData;
+  protected UserDTO authData;
 
-    public PersonDTO(String name, String surname, String phoneNumber, Date birthDate) {
-        this.name = name;
-        this.surname = surname;
-        this.phoneNumber = phoneNumber;
-        this.birthDate = birthDate;
-    }
+  public PersonDTO(String name, String surname, String phoneNumber, Date birthDate) {
+    this.name = name;
+    this.surname = surname;
+    this.phoneNumber = phoneNumber;
+    this.birthDate = birthDate;
+  }
 
-    public PersonDTO(Long id) {
-        this.id = id;
-    }
+  public PersonDTO(Long id) {
+    this.id = id;
+  }
 
-    public abstract Person toEntity();
+  public abstract Person toEntity();
 }

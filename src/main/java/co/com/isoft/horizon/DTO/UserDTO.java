@@ -6,20 +6,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO {
-    private Long id;
+  private Long id;
 
-    private String email;
+  private String email;
 
-    private String password;
+  private String password;
 
-    private PersonDTO userData;
+  private PersonDTO userData;
 
-    private String role;
+  private String role;
 
-    public UserDTO(String email, String password, PersonDTO userData, String role) {
-        this.email = email;
-        this.password = password;
-        this.userData = userData;
-        this.role = role;
-    }
+  public UserDTO(String email, String password, PersonDTO userData, String role) {
+    this.email = email;
+    this.password = password;
+    this.userData = userData;
+    this.role = role;
+  }
 }

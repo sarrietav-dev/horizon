@@ -9,12 +9,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class HorizonApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(HorizonApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(HorizonApplication.class, args);
+  }
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+  @Bean
+  PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

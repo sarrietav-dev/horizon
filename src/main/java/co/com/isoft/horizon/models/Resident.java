@@ -16,38 +16,43 @@ import java.util.List;
 @Getter
 @Setter
 public class Resident extends Person {
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    protected Apartment address;
+  @ManyToOne
+  @JoinColumn(name = "address_id")
+  protected Apartment address;
 
-    @OneToMany(mappedBy = "person")
-    private List<PQRS> pqrs;
+  @OneToMany(mappedBy = "person")
+  private List<PQRS> pqrs;
 
-    public Resident(String name, String surname, String phoneNumber, Date birthDate, User authData, Apartment address) {
-        super(name, surname, phoneNumber, birthDate, authData);
-        this.address = address;
-    }
+  public Resident(
+      String name,
+      String surname,
+      String phoneNumber,
+      Date birthDate,
+      User authData,
+      Apartment address) {
+    super(name, surname, phoneNumber, birthDate, authData);
+    this.address = address;
+  }
 
-    public Resident(String name, String surname, String phoneNumber, Date birthDate) {
-        super(name, surname, phoneNumber, birthDate);
-    }
+  public Resident(String name, String surname, String phoneNumber, Date birthDate) {
+    super(name, surname, phoneNumber, birthDate);
+  }
 
-    protected Resident() {
-    }
+  protected Resident() {}
 
-    public Apartment getAddress() {
-        return address;
-    }
+  public Apartment getAddress() {
+    return address;
+  }
 
-    public void setAddress(Apartment address) {
-        this.address = address;
-    }
+  public void setAddress(Apartment address) {
+    this.address = address;
+  }
 
-    public List<PQRS> getPqrs() {
-        return pqrs;
-    }
+  public List<PQRS> getPqrs() {
+    return pqrs;
+  }
 
-    public void setPqrs(List<PQRS> pqrs) {
-        this.pqrs = pqrs;
-    }
+  public void setPqrs(List<PQRS> pqrs) {
+    this.pqrs = pqrs;
+  }
 }

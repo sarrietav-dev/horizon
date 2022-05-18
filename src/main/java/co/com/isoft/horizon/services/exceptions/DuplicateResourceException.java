@@ -1,7 +1,7 @@
 package co.com.isoft.horizon.services.exceptions;
 
 public class DuplicateResourceException extends Exception {
-    public DuplicateResourceException(String message) {
-        super(message);
-    }
+  public DuplicateResourceException(String message) {
+    super(message);
+  }
 }

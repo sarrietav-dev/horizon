@@ -7,12 +7,12 @@ import co.com.isoft.horizon.models.Resident;
 import java.util.Date;
 
 public class ResidentDTO extends PersonDTO {
-    public ResidentDTO(String name, String surname, String phoneNumber, Date birthDate) {
-        super(name, surname, phoneNumber, birthDate);
-    }
+  public ResidentDTO(String name, String surname, String phoneNumber, Date birthDate) {
+    super(name, surname, phoneNumber, birthDate);
+  }
 
-    @Override
-    public Person toEntity() {
-        return new Resident(name, surname, phoneNumber, birthDate);
-    }
+  @Override
+  public Person toEntity() {
+    return new Resident(name, surname, phoneNumber, birthDate);
+  }
 }

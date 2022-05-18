@@ -10,19 +10,20 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 public class Apartment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String tower;
-    private String stories;
-    private String number;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "person_id")
-    private Proprietary proprietary;
+  private String tower;
+  private String stories;
+  private String number;
 
-    @OneToMany(mappedBy = "address")
-    private List<Resident> residents;
+  @ManyToOne
+  @JoinColumn(name = "person_id")
+  private Proprietary proprietary;
 
-    protected Apartment() {}
+  @OneToMany(mappedBy = "address")
+  private List<Resident> residents;
+
+  protected Apartment() {}
 }

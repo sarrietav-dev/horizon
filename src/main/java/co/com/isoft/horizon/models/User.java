@@ -10,54 +10,50 @@ import javax.persistence.*;
 @Getter
 @Setter
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String email;
+  private String email;
 
-    private String password;
+  private String password;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "authData", fetch = FetchType.LAZY)
-    private Person userData;
+  @OneToOne(cascade = CascadeType.ALL, mappedBy = "authData", fetch = FetchType.LAZY)
+  private Person userData;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private Role role;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "role_id")
+  private Role role;
 
-    public User(String email, String password, Role role) {
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
+  public User(String email, String password, Role role) {
+    this.email = email;
+    this.password = password;
+    this.role = role;
+  }
 
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
+  public User(String email, String password) {
+    this.email = email;
+    this.password = password;
+  }
 
-    protected User() {
+  protected User() {}
 
-    }
+  /** Converts from DTO to Entity */
+  public static User from(UserDTO dto) {
+    User user = new User(dto.getEmail(), dto.getPassword());
+    Person person = dto.getUserData().toEntity();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    user.setUserData(person);
+    person.setAuthData(user);
 
-    public Long getId() {
-        return id;
-    }
+    return user;
+  }
 
-    /**
-     * Converts from DTO to Entity
-     */
-    public static User from(UserDTO dto) {
-        User user = new User(dto.getEmail(), dto.getPassword());
-        Person person = dto.getUserData().toEntity();
+  public Long getId() {
+    return id;
+  }
 
-        user.setUserData(person);
-        person.setAuthData(user);
-
-        return user;
-    }
+  public void setId(Long id) {
+    this.id = id;
+  }
 }
