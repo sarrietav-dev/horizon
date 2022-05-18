@@ -1,8 +1,10 @@
 package co.com.isoft.horizon.services.implementations;
 
 import co.com.isoft.horizon.models.PQRS;
+import co.com.isoft.horizon.models.Status;
 import co.com.isoft.horizon.repositories.PQRSRepo;
 import co.com.isoft.horizon.services.PqrsService;
+import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,4 +30,13 @@ public class PqrsServiceImplementation implements PqrsService {
         log.info("Saving the PQRS with title {}", pqrs.getTitle());
         return pqrsRepo.save(pqrs);
     }
+
+    @Override
+    public PQRS changeStatus(PQRS pqrs, Status status) throws ResourceNotFoundException {
+        log.info("Changing the status of {} to {}", pqrs.getTitle(), status.name());
+        PQRS foundPQRS = pqrsRepo.findById(pqrs.getId()).orElseThrow(() -> new ResourceNotFoundException("The pqrs wasn't found"));
+        foundPQRS.setStatus(status);
+        return pqrsRepo.save(foundPQRS);
+    }
+
 }
