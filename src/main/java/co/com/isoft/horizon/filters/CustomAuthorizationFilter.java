@@ -38,6 +38,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } else {
             try {
+                log.info("Extracting the token from the request.");
                 String token = tokenService.extractAuthorizationToken(request);
                 DecodedJWT decodedJWT = tokenService.decodeJWT(token);
 
@@ -50,18 +51,21 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 filterChain.doFilter(request, response);
             } catch (TokenMissingException e) {
+                log.error(e.getMessage());
                 filterChain.doFilter(request, response);
             } catch (TokenExpiredException e) {
+                log.error(e.getMessage());
                 Map<String, String> payload = new HashMap<>();
                 payload.put("error", e.getMessage());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 response.setStatus(401);
                 new ObjectMapper().writeValue(response.getOutputStream(), payload);
             } catch (Exception e) {
-                log.error("Logging error: {}", e.getMessage());
+                log.error(e.getMessage());
                 Map<String, String> payload = new HashMap<>();
                 payload.put("error", e.getMessage());
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setStatus(400);
                 new ObjectMapper().writeValue(response.getOutputStream(), payload);
             }
         }

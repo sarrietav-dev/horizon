@@ -69,11 +69,13 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public User getUser(Long id) throws ResourceNotFoundException {
+        log.info("Fetching the user with the id: {}", id);
         return userRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("The user with the id %d doesn't exist", id)));
     }
 
     @Override
     public User getUser(String email) throws ResourceNotFoundException {
+        log.info("Fetching the user with the email: {}", email);
         return userRepo.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(String.format("The user with the email %s doesn't exist", email)));
     }
 
@@ -84,6 +86,7 @@ public class UserServiceImplementation implements UserService, UserDetailsServic
 
     @Override
     public Role getRole(String name) throws ResourceNotFoundException {
+        log.info("Fetching a role with the name: {}", name);
         return roleRepo.findByName(name).orElseThrow(() -> new ResourceNotFoundException(String.format("The role with the name %s doesn't exist", name)));
     }
 }

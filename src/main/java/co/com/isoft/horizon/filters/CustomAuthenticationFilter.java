@@ -43,11 +43,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String authorityList = user.getAuthorities().stream().findFirst().orElseThrow(() -> new ServletException("Authority not found")).getAuthority();
 
+        log.info("Creating access and refresh tokens for user: {}", user.getUsername());
+
         JWTCreator.Builder accessBuilder = JWT.create()
                 .withSubject(user.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer(request.getRequestURL().toString())
                 .withClaim("role", authorityList);
+
 
         JWTCreator.Builder refreshBuilder = JWT.create()
                 .withSubject(user.getUsername())
