@@ -2,10 +2,13 @@ package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.DTO.PqrsDTO;
 import co.com.isoft.horizon.models.PQRS;
+import co.com.isoft.horizon.models.Status;
 import co.com.isoft.horizon.models.User;
+import co.com.isoft.horizon.models.exceptions.ForbiddenStatusChangeException;
 import co.com.isoft.horizon.services.UserService;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import co.com.isoft.horizon.services.implementations.PqrsServiceImplementation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +55,27 @@ public class PQRSController {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody SetStatusForm status) {
+        try {
+            PQRS pqrs = pqrsService.get(Long.valueOf(id));
+            return ResponseEntity.ok(new PqrsDTO(pqrsService.changeStatus(pqrs, status.getStatus())));
+        } catch (ResourceNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (ForbiddenStatusChangeException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (NullPointerException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body("Please check if any of the keys are correct.");
+        }
+    }
+
+    @Data
+    static class SetStatusForm {
+        private Status status;
     }
 }
