@@ -8,6 +8,7 @@ import co.com.isoft.horizon.models.exceptions.ForbiddenStatusChangeException;
 import co.com.isoft.horizon.services.UserService;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import co.com.isoft.horizon.services.implementations.PqrsServiceImplementation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,10 +58,10 @@ public class PQRSController {
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody Status status) {
+    public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody SetStatusForm status) {
         try {
             PQRS pqrs = pqrsService.get(Long.valueOf(id));
-            return ResponseEntity.ok(pqrsService.changeStatus(pqrs, status));
+            return ResponseEntity.ok(pqrsService.changeStatus(pqrs, status.getStatus()));
         } catch (ResourceNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -68,5 +69,10 @@ public class PQRSController {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @Data
+    static class SetStatusForm {
+        private Status status;
     }
 }
