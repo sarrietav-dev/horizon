@@ -61,6 +61,7 @@ public class PQRS {
         this.title = dto.getTitle();
         this.category = dto.getCategory();
         this.description = dto.getDescription();
+        this.status = dto.getStatus();
     }
 
     protected PQRS() {

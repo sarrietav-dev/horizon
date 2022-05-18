@@ -33,5 +33,6 @@ public class PqrsDTO {
         this.id = pqrs.getId();
         this.creationDate = pqrs.getCreationDate();
         personId = pqrs.getPerson().getId();
+        this.status = pqrs.getStatus();
     }
 }
