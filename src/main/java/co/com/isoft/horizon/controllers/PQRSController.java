@@ -61,13 +61,16 @@ public class PQRSController {
     public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody SetStatusForm status) {
         try {
             PQRS pqrs = pqrsService.get(Long.valueOf(id));
-            return ResponseEntity.ok(pqrsService.changeStatus(pqrs, status.getStatus()));
+            return ResponseEntity.ok(new PqrsDTO(pqrsService.changeStatus(pqrs, status.getStatus())));
         } catch (ResourceNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (ForbiddenStatusChangeException e) {
             log.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (NullPointerException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body("Please check if any of the keys are correct.");
         }
     }
 

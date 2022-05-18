@@ -75,7 +75,7 @@ public class PQRS {
      */
     public void setStatus(Status status) throws ForbiddenStatusChangeException {
         if (status.getHierarchy() < this.getStatus().getHierarchy()) {
-            throw new ForbiddenStatusChangeException(String.format("Can't change from %s to %s", this.getStatus().name(), status.name()));
+            throw new ForbiddenStatusChangeException(String.format("Can't change from %s to %s.", this.getStatus().name(), status.name()));
         }
         this.status = status;
     }
