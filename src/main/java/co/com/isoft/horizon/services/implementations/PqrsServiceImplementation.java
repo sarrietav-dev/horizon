@@ -2,6 +2,7 @@ package co.com.isoft.horizon.services.implementations;
 
 import co.com.isoft.horizon.models.PQRS;
 import co.com.isoft.horizon.models.Status;
+import co.com.isoft.horizon.models.exceptions.ForbiddenStatusChangeException;
 import co.com.isoft.horizon.repositories.PQRSRepo;
 import co.com.isoft.horizon.services.PqrsService;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
@@ -32,7 +33,7 @@ public class PqrsServiceImplementation implements PqrsService {
     }
 
     @Override
-    public PQRS changeStatus(PQRS pqrs, Status status) throws ResourceNotFoundException {
+    public PQRS changeStatus(PQRS pqrs, Status status) throws ResourceNotFoundException, ForbiddenStatusChangeException {
         log.info("Changing the status of {} to {}", pqrs.getTitle(), status.name());
         PQRS foundPQRS = pqrsRepo.findById(pqrs.getId()).orElseThrow(() -> new ResourceNotFoundException("The pqrs wasn't found"));
         foundPQRS.setStatus(status);

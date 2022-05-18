@@ -1,6 +1,7 @@
 package co.com.isoft.horizon.models;
 
 import co.com.isoft.horizon.DTO.PqrsDTO;
+import co.com.isoft.horizon.models.exceptions.ForbiddenStatusChangeException;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -63,5 +64,18 @@ public class PQRS {
     }
 
     protected PQRS() {
+    }
+
+    /**
+     * Set the current status to a  new status.
+     * The new status can't be one that happens before the actual status value
+     *
+     * @throws ForbiddenStatusChangeException if the new status comes before the new status.
+     */
+    public void setStatus(Status status) throws ForbiddenStatusChangeException {
+        if (status.ordinal() < this.getStatus().ordinal()) {
+            throw new ForbiddenStatusChangeException();
+        }
+        this.status = status;
     }
 }
