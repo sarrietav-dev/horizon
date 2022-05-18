@@ -13,4 +13,6 @@ public interface PqrsService {
     PQRS save(PQRS pqrs);
 
     PQRS changeStatus(PQRS pqrs, Status status) throws ResourceNotFoundException, ForbiddenStatusChangeException;
+
+    PQRS get(Long id) throws ResourceNotFoundException;
 }

@@ -40,4 +40,10 @@ public class PqrsServiceImplementation implements PqrsService {
         return pqrsRepo.save(foundPQRS);
     }
 
+    @Override
+    public PQRS get(Long id) throws ResourceNotFoundException {
+        log.info("Getting a PQRS with the id: {}", id);
+        return pqrsRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("The PQRS with the id %d was not found", id)));
+    }
+
 }
