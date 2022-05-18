@@ -68,12 +68,12 @@ public class PQRS {
 
     /**
      * Set the current status to a  new status.
-     * The new status can't be one that happens before the actual status value
+     * The new status can't be one that happens before the actual status value in the hierarchy.
      *
      * @throws ForbiddenStatusChangeException if the new status comes before the new status.
      */
     public void setStatus(Status status) throws ForbiddenStatusChangeException {
-        if (status.ordinal() < this.getStatus().ordinal()) {
+        if (status.getHierarchy() < this.getStatus().getHierarchy()) {
             throw new ForbiddenStatusChangeException();
         }
         this.status = status;
