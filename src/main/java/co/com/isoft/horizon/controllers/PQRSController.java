@@ -2,7 +2,9 @@ package co.com.isoft.horizon.controllers;
 
 import co.com.isoft.horizon.DTO.PqrsDTO;
 import co.com.isoft.horizon.models.PQRS;
+import co.com.isoft.horizon.models.Status;
 import co.com.isoft.horizon.models.User;
+import co.com.isoft.horizon.models.exceptions.ForbiddenStatusChangeException;
 import co.com.isoft.horizon.services.UserService;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import co.com.isoft.horizon.services.implementations.PqrsServiceImplementation;
@@ -51,6 +53,20 @@ public class PQRSController {
         } catch (ResourceNotFoundException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> setStatus(@PathVariable String id, @RequestBody Status status) {
+        try {
+            PQRS pqrs = pqrsService.get(Long.valueOf(id));
+            return ResponseEntity.ok(pqrsService.changeStatus(pqrs, status));
+        } catch (ResourceNotFoundException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (ForbiddenStatusChangeException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
