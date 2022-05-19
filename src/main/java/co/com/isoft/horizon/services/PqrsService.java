@@ -4,11 +4,12 @@ import co.com.isoft.horizon.models.PQRS;
 import co.com.isoft.horizon.models.Status;
 import co.com.isoft.horizon.models.exceptions.ForbiddenStatusChangeException;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 public interface PqrsService {
-  List<PQRS> getAll();
+
+  Page<PQRS> getAll(PageRequest pageRequest);
 
   PQRS save(PQRS pqrs);
 

@@ -1,10 +1,11 @@
 import axiosInstance from "@/utils/axiosInstance";
 import { PQRS } from "@/models/PQRS";
+import { Page } from "@/types/Page";
 
 const resourcePath = "/pqrs";
 
 const getAll = async () => {
-  const response = await axiosInstance.get<PQRS[]>(resourcePath);
+  const response = await axiosInstance.get<Page<PQRS>>(resourcePath);
   return response.data;
 };
 

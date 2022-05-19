@@ -4,15 +4,16 @@ import { PQRS } from "@/models/PQRS";
 import pqrsService from "@/services/pqrsService";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
+import { Page } from "@/types/Page";
+import { Pagination } from "react-bootstrap";
 
 const HomeView = () => {
-  const [pqrsList, setPqrsList] = useState<PQRS[]>([]);
+  const [pqrsPage, setPqrsPage] = useState<Page<PQRS>>();
   const { modal, showModal, hideModal } = useModal(
     <PqrsCreationForm
       onSubmit={async (e, title, description) => {
         e.preventDefault();
-        const newPqrs = await pqrsService.create({ description, title });
-        setPqrsList((prev) => [...prev, newPqrs]);
+        await pqrsService.create({ description, title });
         hideModal();
       }}
     />,
@@ -22,15 +23,26 @@ const HomeView = () => {
   );
 
   useEffect(() => {
-    pqrsService
-      .getAll()
-      .then((response) => setPqrsList(Array.isArray(response) ? response : []));
+    pqrsService.getAll().then((response) => setPqrsPage(response));
   }, []);
+
+  const paginationItems = () =>
+    Array(pqrsPage?.totalPages)
+      .fill(0)
+      .map((value, index) => (
+        <Pagination.Item
+          key={index}
+          active={index + 1 === (pqrsPage?.number ?? 0) + 1}
+        >
+          {index + 1}
+        </Pagination.Item>
+      ));
 
   return (
     <main className="px-5 py-5">
       {modal}
-      <PQRSList list={pqrsList} />
+      <PQRSList list={pqrsPage?.content ?? []} />
+      <Pagination>{paginationItems()}</Pagination>
       <CreateButton onClick={() => showModal()} />
     </main>
   );
