@@ -35,12 +35,20 @@ export const pqrsSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(
-      getPqrsPage.fulfilled,
-      (state, action: PayloadAction<Page<PQRS>>) => {
-        state.page = action.payload;
-      }
-    );
+    builder
+      .addCase(
+        getPqrsPage.fulfilled,
+        (state, action: PayloadAction<Page<PQRS>>) => {
+          state.page = action.payload;
+        }
+      )
+      .addCase(createPqrs.fulfilled, (state, action) => {
+        if (state.page.last && state.page.content.length < 5) {
+          state.page.content.push(action.payload);
+        } else if (state.page.content.length === 5) {
+          state.page.totalPages += 1;
+        }
+      });
   },
 });
 
@@ -56,4 +64,13 @@ export const getPqrsPage = createAsyncThunk(
   async (pageNumber?: number) => {
     return await pqrsService.getAll(pageNumber);
   }
+);
+
+export const createPqrs = createAsyncThunk(
+  "pqrsPage/createPqrs",
+  async ({ title, description }: { title: string; description: string }) =>
+    await pqrsService.create({
+      title,
+      description,
+    })
 );

@@ -1,12 +1,11 @@
 import PqrsCard from "@/components/PqrsCard";
 
 import { PQRS } from "@/models/PQRS";
-import pqrsService from "@/services/pqrsService";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
 import { Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { getPqrsPage } from "@/stores/reducers/pqrs.store";
+import { createPqrs, getPqrsPage } from "@/stores/reducers/pqrs.store";
 import { useEffect } from "react";
 
 const HomeView = () => {
@@ -17,7 +16,7 @@ const HomeView = () => {
     <PqrsCreationForm
       onSubmit={async (e, title, description) => {
         e.preventDefault();
-        await pqrsService.create({ description, title });
+        await dispatch(createPqrs({ title, description }));
         hideModal();
       }}
     />,
