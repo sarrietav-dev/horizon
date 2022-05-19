@@ -1,11 +1,12 @@
 import TheLoginForm from "@/components/TheLoginForm";
 import { useNavigate } from "react-router-dom";
 import { FormEvent } from "react";
-import { useAuth } from "@/context/authContext";
+import { authenticateUser } from "@/stores/reducers/auth.store";
+import { useAppDispatch } from "@/hooks/redux-hooks";
 
 const LoginView = () => {
   const navigate = useNavigate();
-  const auth = useAuth();
+  const dispatch = useAppDispatch();
 
   const handleSubmit = async (
     e: FormEvent,
@@ -13,8 +14,8 @@ const LoginView = () => {
     password: string
   ) => {
     e.preventDefault();
-
-    auth.signIn({ email, password }, () => navigate("/", { replace: true }));
+    await dispatch(authenticateUser({ email, password }));
+    navigate("/", { replace: true });
   };
 
   return (
