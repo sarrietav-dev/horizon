@@ -3,23 +3,27 @@ import { PQRS } from "@/models/PQRS";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import pqrsService from "@/services/pqrsService";
 
-type InitialStateType = Page<PQRS>;
+type InitialStateType = {
+  page: Page<PQRS>;
+};
 
 const initialState: InitialStateType = {
-  totalPages: 1,
-  numberOfElements: 0,
-  content: [],
-  empty: true,
-  first: true,
-  last: false,
-  number: 0,
-  size: 0,
-  sort: {
+  page: {
+    totalPages: 1,
+    numberOfElements: 0,
+    content: [],
     empty: true,
-    sorted: true,
-    unsorted: false,
+    first: true,
+    last: false,
+    number: 0,
+    size: 0,
+    sort: {
+      empty: true,
+      sorted: true,
+      unsorted: false,
+    },
+    totalElements: 0,
   },
-  totalElements: 0,
 };
 
 export const pqrsSlice = createSlice({
@@ -27,14 +31,14 @@ export const pqrsSlice = createSlice({
   initialState,
   reducers: {
     setPage(state, action: PayloadAction<Page<PQRS>>) {
-      state = action.payload;
+      state.page = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(
       getPqrsPage.fulfilled,
       (state, action: PayloadAction<Page<PQRS>>) => {
-        state = action.payload;
+        state.page = action.payload;
       }
     );
   },

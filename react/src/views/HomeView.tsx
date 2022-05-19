@@ -11,7 +11,7 @@ import { useEffect } from "react";
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
-  const pqrsPage = useAppSelector((state) => state.pqrs);
+  const pqrsPage = useAppSelector((state) => state.pqrs.page);
 
   const { modal, showModal, hideModal } = useModal(
     <PqrsCreationForm
