@@ -1,6 +1,7 @@
 import { Page } from "@/types/Page";
 import { PQRS } from "@/models/PQRS";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import pqrsService from "@/services/pqrsService";
 
 type InitialStateType = Page<PQRS>;
 
@@ -29,7 +30,26 @@ export const pqrsSlice = createSlice({
       state = action.payload;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(
+      getPqrsPage.fulfilled,
+      (state, action: PayloadAction<Page<PQRS>>) => {
+        state = action.payload;
+      }
+    );
+  },
 });
 
-export const { setPage } = pqrsSlice.actions;
 export default pqrsSlice.reducer;
+
+/**
+ * Fetches the given page from the server.
+ *
+ * If the page number isn't provided, it defaults to 0.
+ */
+export const getPqrsPage = createAsyncThunk(
+  "pqrsPage/getPqrsPage",
+  async (pageNumber?: number) => {
+    return await pqrsService.getAll(pageNumber);
+  }
+);
