@@ -5,6 +5,7 @@ import pqrsService from "@/services/pqrsService";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
 import { Page } from "@/types/Page";
+import { Pagination } from "react-bootstrap";
 
 const HomeView = () => {
   const [pqrsPage, setPqrsPage] = useState<Page<PQRS>>();
@@ -25,10 +26,23 @@ const HomeView = () => {
     pqrsService.getAll().then((response) => setPqrsPage(response));
   }, []);
 
+  const paginationItems = () =>
+    Array(pqrsPage?.totalPages)
+      .fill(0)
+      .map((value, index) => (
+        <Pagination.Item
+          key={index}
+          active={index + 1 === (pqrsPage?.number ?? 0) + 1}
+        >
+          {index + 1}
+        </Pagination.Item>
+      ));
+
   return (
     <main className="px-5 py-5">
       {modal}
       <PQRSList list={pqrsPage?.content ?? []} />
+      <Pagination>{paginationItems()}</Pagination>
       <CreateButton onClick={() => showModal()} />
     </main>
   );
