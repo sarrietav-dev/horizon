@@ -4,8 +4,12 @@ import { Page } from "@/types/Page";
 
 const resourcePath = "/pqrs";
 
-const getAll = async () => {
-  const response = await axiosInstance.get<Page<PQRS>>(resourcePath);
+const getAll = async (page?: number) => {
+  const response = await axiosInstance.get<Page<PQRS>>(resourcePath, {
+    params: {
+      page: page ?? 0,
+    },
+  });
   return response.data;
 };
 
