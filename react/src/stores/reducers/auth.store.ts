@@ -5,6 +5,7 @@ import { RootState } from "@/stores";
 
 const ACCESS_TOKEN = "accessToken";
 const REFRESH_TOKEN = "refreshToken";
+const ROLE = "role";
 
 const localStorageAccessToken = localStorage.getItem(ACCESS_TOKEN);
 const localStorageRefreshToken = localStorage.getItem(REFRESH_TOKEN);
@@ -12,7 +13,7 @@ const localStorageRefreshToken = localStorage.getItem(REFRESH_TOKEN);
 interface AuthStoreInitialState {
   accessToken: string | null;
   refreshToken: string | null;
-  userRole: "ROLE_RESIDENT" | "ROLE_ADMIN" | "ROLE_PROPRIETARY" | null;
+  userRole: string | null;
   isAuth: boolean;
 }
 
@@ -30,18 +31,22 @@ export const authSlice = createSlice({
     deleteTokens(state) {
       state.accessToken = null;
       state.refreshToken = null;
+      state.userRole = null;
       localStorage.removeItem(ACCESS_TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
+      localStorage.removeItem(ROLE);
       state.isAuth = false;
     },
   },
   extraReducers: (builder) => {
     builder.addCase(authenticateUser.fulfilled, (state, action) => {
-      const { accessToken, refreshToken } = action.payload;
+      const { accessToken, refreshToken, role } = action.payload;
       state.accessToken = accessToken;
       localStorage.setItem(ACCESS_TOKEN, accessToken);
       state.refreshToken = refreshToken;
       localStorage.setItem(REFRESH_TOKEN, refreshToken);
+      state.userRole = role;
+      localStorage.setItem(REFRESH_TOKEN, ROLE);
       state.isAuth = true;
     });
   },

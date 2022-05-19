@@ -1,6 +1,5 @@
 package co.com.isoft.horizon.filters;
 
-import co.com.isoft.horizon.utils.ResponseBodyBuilder;
 import co.com.isoft.horizon.utils.TokenService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTCreator;
@@ -72,7 +71,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
     response.setHeader("access_token", tokenService.signJWT(accessBuilder));
     response.setHeader("refresh_token", tokenService.signJWT(refreshBuilder));
-
-    ResponseBodyBuilder.create(response, 200).addField("role", authorityList);
+    response.setHeader("role", authorityList);
   }
 }

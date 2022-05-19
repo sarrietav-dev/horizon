@@ -26,10 +26,11 @@ export const authenticateUser = async (credentials: Credentials) => {
   const { headers, status } = response;
 
   if (status === 200) {
-    const { access_token, refresh_token } = headers;
+    const { access_token, refresh_token, role } = headers;
     return {
       accessToken: access_token,
       refreshToken: refresh_token,
+      role,
     };
   } else {
     throw new FailedAuthenticationException(
