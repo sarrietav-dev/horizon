@@ -5,4 +5,5 @@ export interface PQRS {
   creationDate: Date;
   category: string;
   personId: string;
+  status: string;
 }
