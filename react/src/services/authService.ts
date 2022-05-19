@@ -37,3 +37,7 @@ export const authenticateUser = async (credentials: Credentials) => {
     );
   }
 };
+
+export default {
+  authenticateUser,
+};
