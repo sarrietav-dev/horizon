@@ -1,14 +1,18 @@
 import PqrsCard from "@/components/PqrsCard";
-import { useEffect, useState } from "react";
+
 import { PQRS } from "@/models/PQRS";
 import pqrsService from "@/services/pqrsService";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
-import { Page } from "@/types/Page";
 import { Pagination } from "react-bootstrap";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
+import { getPqrsPage } from "@/stores/reducers/PqrsStore";
+import { useEffect } from "react";
 
 const HomeView = () => {
-  const [pqrsPage, setPqrsPage] = useState<Page<PQRS>>();
+  const dispatch = useAppDispatch();
+  const pqrsPage = useAppSelector((state) => state.pqrs);
+
   const { modal, showModal, hideModal } = useModal(
     <PqrsCreationForm
       onSubmit={async (e, title, description) => {
@@ -23,26 +27,32 @@ const HomeView = () => {
   );
 
   useEffect(() => {
-    pqrsService.getAll().then((response) => setPqrsPage(response));
-  }, []);
+    dispatch(getPqrsPage());
+  }, [dispatch]);
 
-  const paginationItems = () =>
-    Array(pqrsPage?.totalPages)
-      .fill(0)
-      .map((value, index) => (
-        <Pagination.Item
-          key={index}
-          active={index + 1 === (pqrsPage?.number ?? 0) + 1}
-        >
-          {index + 1}
-        </Pagination.Item>
-      ));
+  const PaginationItems = () => (
+    <>
+      {Array(pqrsPage?.totalPages)
+        .fill(0)
+        .map((value, index) => (
+          <Pagination.Item
+            key={index}
+            active={index + 1 === (pqrsPage?.number ?? 0) + 1}
+            onClick={() => dispatch(getPqrsPage(index))}
+          >
+            {index + 1}
+          </Pagination.Item>
+        ))}
+    </>
+  );
 
   return (
     <main className="px-5 py-5">
       {modal}
       <PQRSList list={pqrsPage?.content ?? []} />
-      <Pagination>{paginationItems()}</Pagination>
+      <Pagination>
+        <PaginationItems />
+      </Pagination>
       <CreateButton onClick={() => showModal()} />
     </main>
   );
