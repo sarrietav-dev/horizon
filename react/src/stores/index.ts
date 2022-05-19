@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import pqrsSlice from "@/stores/reducers/PqrsStore";
+import pqrsSlice from "@/stores/reducers/pqrs.store";
 
 export const store = configureStore({
   reducer: {

@@ -6,7 +6,7 @@ import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
 import { Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { getPqrsPage } from "@/stores/reducers/PqrsStore";
+import { getPqrsPage } from "@/stores/reducers/pqrs.store";
 import { useEffect } from "react";
 
 const HomeView = () => {
