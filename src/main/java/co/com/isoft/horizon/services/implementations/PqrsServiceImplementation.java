@@ -8,10 +8,10 @@ import co.com.isoft.horizon.services.PqrsService;
 import co.com.isoft.horizon.services.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @Slf4j
@@ -21,9 +21,9 @@ public class PqrsServiceImplementation implements PqrsService {
   private final PQRSRepo pqrsRepo;
 
   @Override
-  public List<PQRS> getAll() {
-    log.info("Getting all the PQRS");
-    return (List<PQRS>) pqrsRepo.findAll();
+  public Page<PQRS> getAll(PageRequest pageRequest) {
+    log.info("Getting the page {} of PQRS", pageRequest.getPageNumber());
+    return pqrsRepo.findAll(pageRequest);
   }
 
   @Override
