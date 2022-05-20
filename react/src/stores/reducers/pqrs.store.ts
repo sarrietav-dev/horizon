@@ -48,6 +48,13 @@ export const pqrsSlice = createSlice({
         } else if (state.page.content.length === 5) {
           state.page.totalPages += 1;
         }
+      })
+      .addCase(changeStatus.fulfilled, (state, action) => {
+        const pqrsIndex = state.page.content.findIndex(
+          (pqrs) => pqrs.id === action.payload.id
+        );
+
+        state.page.content[pqrsIndex].status = action.payload.status;
       });
   },
 });
@@ -73,4 +80,10 @@ export const createPqrs = createAsyncThunk(
       title,
       description,
     })
+);
+
+export const changeStatus = createAsyncThunk(
+  "pqrsPage/changeStatus",
+  async ({ id, status }: { id: number; status: string }) =>
+    await pqrsService.changeStatus(id, status)
 );
