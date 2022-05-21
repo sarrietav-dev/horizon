@@ -28,4 +28,15 @@ const create = async ({
   return response.data;
 };
 
-export default { getAll, create };
+const changeStatus = async (id: number, status: string) => {
+  const response = await axiosInstance.patch<PQRS>(
+    `${resourcePath}/${id}/status`,
+    {
+      status,
+    }
+  );
+
+  return response.data;
+};
+
+export default { getAll, create, changeStatus };
