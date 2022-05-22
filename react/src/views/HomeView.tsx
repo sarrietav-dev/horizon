@@ -3,7 +3,14 @@ import PqrsCard from "@/components/PqrsCard";
 import { PQRS } from "@/models/PQRS";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
-import { Pagination } from "react-bootstrap";
+import {
+  Button,
+  Container,
+  Form,
+  FormControl,
+  Navbar,
+  Pagination,
+} from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import { createPqrs, getPqrsPage } from "@/stores/reducers/pqrs.store";
 import { useEffect } from "react";
@@ -46,14 +53,37 @@ const HomeView = () => {
   );
 
   return (
-    <main className="px-5 py-5">
-      {modal}
-      <PQRSList list={pqrsPage?.content ?? []} />
-      <Pagination>
-        <PaginationItems />
-      </Pagination>
-      <CreateButton onClick={() => showModal()} />
-    </main>
+    <>
+      <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
+        <Container fluid>
+          <Navbar.Brand>Horizon</Navbar.Brand>
+          <Navbar.Toggle
+            aria-controls="navbarScroll"
+            style={{ justifySelf: "flex-end" }}
+          />
+          <Navbar.Collapse id="navbarScroll">
+            <Button>Crear usuario</Button>
+            <Form className="d-flex">
+              <FormControl
+                type="search"
+                placeholder="Search"
+                className="me-2"
+                aria-label="Search"
+              />
+              <Button variant="success">Search</Button>
+            </Form>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <main className="px-5">
+        {modal}
+        <PQRSList list={pqrsPage?.content ?? []} />
+        <Pagination>
+          <PaginationItems />
+        </Pagination>
+        <CreateButton onClick={() => showModal()} />
+      </main>
+    </>
   );
 };
 
