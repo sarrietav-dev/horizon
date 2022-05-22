@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,12 @@ public class PqrsServiceImplementation implements PqrsService {
   public Page<PQRS> getAll(PageRequest pageRequest) {
     log.info("Getting the page {} of PQRS", pageRequest.getPageNumber());
     return pqrsRepo.findAll(pageRequest);
+  }
+
+  @Override
+  public Page<PQRS> getAllThatMatchesTitle(Pageable pageRequest, String title) {
+    log.info("Getting all PQRS that contains the title: {}", title);
+    return pqrsRepo.getAllByTitleContainingIgnoreCase(title, pageRequest);
   }
 
   @Override
