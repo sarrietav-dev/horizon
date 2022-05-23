@@ -4,10 +4,12 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import pqrsService from "@/services/pqrsService";
 
 type InitialStateType = {
+  resource: string;
   page: Page<PQRS>;
 };
 
 const initialState: InitialStateType = {
+  resource: "/",
   page: {
     totalPages: 1,
     numberOfElements: 0,
@@ -39,6 +41,7 @@ export const pqrsSlice = createSlice({
       .addCase(
         getPqrsPage.fulfilled,
         (state, action: PayloadAction<Page<PQRS>>) => {
+          state.resource = "/";
           state.page = action.payload;
         }
       )
@@ -55,6 +58,10 @@ export const pqrsSlice = createSlice({
         );
 
         state.page.content[pqrsIndex].status = action.payload.status;
+      })
+      .addCase(getPqrsPageByTitle.fulfilled, (state, action) => {
+        state.resource = "/title";
+        state.page = action.payload;
       });
   },
 });
@@ -86,4 +93,11 @@ export const changeStatus = createAsyncThunk(
   "pqrsPage/changeStatus",
   async ({ id, status }: { id: number; status: string }) =>
     await pqrsService.changeStatus(id, status)
+);
+
+export const getPqrsPageByTitle = createAsyncThunk(
+  "pqrsPage/getPqrsPageByTitle",
+  async ({ pageNumber, title }: { pageNumber?: number; title: string }) => {
+    return await pqrsService.getAll(pageNumber, title);
+  }
 );

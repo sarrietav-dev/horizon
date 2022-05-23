@@ -3,21 +3,20 @@ import PqrsCard from "@/components/PqrsCard";
 import { PQRS } from "@/models/PQRS";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
-import {
-  Button,
-  Container,
-  Form,
-  FormControl,
-  Navbar,
-  Pagination,
-} from "react-bootstrap";
+import { Button, Container, Navbar, Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { createPqrs, getPqrsPage } from "@/stores/reducers/pqrs.store";
-import { useEffect } from "react";
+import {
+  createPqrs,
+  getPqrsPage,
+  getPqrsPageByTitle,
+} from "@/stores/reducers/pqrs.store";
+import { useEffect, useState } from "react";
+import TheSearchBar from "@/components/TheSearchBar";
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
-  const pqrsPage = useAppSelector((state) => state.pqrs.page);
+  const { page: pqrsPage, resource } = useAppSelector((state) => state.pqrs);
+  const [query, setQuery] = useState("");
 
   const { modal, showModal, hideModal } = useModal(
     <PqrsCreationForm
@@ -44,13 +43,32 @@ const HomeView = () => {
           <Pagination.Item
             key={index}
             active={index + 1 === (pqrsPage?.number ?? 0) + 1}
-            onClick={() => dispatch(getPqrsPage(index))}
+            onClick={() =>
+              resource === "/"
+                ? dispatch(getPqrsPage(index))
+                : dispatch(
+                    getPqrsPageByTitle({
+                      title: query,
+                      pageNumber: index,
+                    })
+                  )
+            }
           >
             {index + 1}
           </Pagination.Item>
         ))}
     </>
   );
+
+  const handleSearchSubmit = (query: string) => {
+    dispatch(getPqrsPageByTitle({ title: query }));
+  };
+
+  const searchBarProps = {
+    onSubmit: handleSearchSubmit,
+    value: query,
+    onChange: setQuery,
+  };
 
   return (
     <>
@@ -63,15 +81,7 @@ const HomeView = () => {
           />
           <Navbar.Collapse id="navbarScroll">
             <Button>Crear usuario</Button>
-            <Form className="d-flex">
-              <FormControl
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-              <Button variant="success">Search</Button>
-            </Form>
+            <TheSearchBar {...searchBarProps} />
           </Navbar.Collapse>
         </Container>
       </Navbar>
