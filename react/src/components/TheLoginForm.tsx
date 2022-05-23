@@ -21,6 +21,7 @@ const TheLoginForm: React.FC<FormProps> = ({ onSubmit }) => {
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 className="form-control"
+                placeholder="Email"
               />
             </div>
           </div>
@@ -31,6 +32,7 @@ const TheLoginForm: React.FC<FormProps> = ({ onSubmit }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 className="form-control"
+                placeholder="Contraseña"
               />
             </div>
           </div>
