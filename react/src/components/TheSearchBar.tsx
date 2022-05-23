@@ -24,7 +24,7 @@ const TheSearchBar = ({ onSubmit, onChange, value }: TheSearchBarProps) => {
         onChange={(e) => onChange(e.target.value)}
       />
       <Button type="submit" variant="success">
-        Search
+        Buscar
       </Button>
     </Form>
   );
