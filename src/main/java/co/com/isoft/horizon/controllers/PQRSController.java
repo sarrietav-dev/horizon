@@ -35,9 +35,19 @@ public class PQRSController {
   }
 
   @GetMapping
-  public ResponseEntity<Page<PqrsDTO>> getAll(@RequestParam Optional<Integer> page) {
-    return ResponseEntity.ok(
-        pqrsService.getAll(PageRequest.of(page.orElse(0), 5)).map(PqrsDTO::new));
+  public ResponseEntity<Page<PqrsDTO>> getAll(
+      @RequestParam Optional<Integer> page, @RequestParam Optional<String> title) {
+    return title
+        .map(
+            s ->
+                ResponseEntity.ok(
+                    pqrsService
+                        .getAllThatMatchesTitle(PageRequest.of(page.orElse(0), 5), s)
+                        .map(PqrsDTO::new)))
+        .orElseGet(
+            () ->
+                ResponseEntity.ok(
+                    pqrsService.getAll(PageRequest.of(page.orElse(0), 5)).map(PqrsDTO::new)));
   }
 
   @PostMapping

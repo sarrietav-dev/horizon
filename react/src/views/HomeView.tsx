@@ -3,14 +3,20 @@ import PqrsCard from "@/components/PqrsCard";
 import { PQRS } from "@/models/PQRS";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
-import { Pagination } from "react-bootstrap";
+import { Button, Container, Navbar, Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
-import { createPqrs, getPqrsPage } from "@/stores/reducers/pqrs.store";
-import { useEffect } from "react";
+import {
+  createPqrs,
+  getPqrsPage,
+  getPqrsPageByTitle,
+} from "@/stores/reducers/pqrs.store";
+import { useEffect, useState } from "react";
+import TheSearchBar from "@/components/TheSearchBar";
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
-  const pqrsPage = useAppSelector((state) => state.pqrs.page);
+  const { page: pqrsPage, resource } = useAppSelector((state) => state.pqrs);
+  const [query, setQuery] = useState("");
 
   const { modal, showModal, hideModal } = useModal(
     <PqrsCreationForm
@@ -37,7 +43,16 @@ const HomeView = () => {
           <Pagination.Item
             key={index}
             active={index + 1 === (pqrsPage?.number ?? 0) + 1}
-            onClick={() => dispatch(getPqrsPage(index))}
+            onClick={() =>
+              resource === "/"
+                ? dispatch(getPqrsPage(index))
+                : dispatch(
+                    getPqrsPageByTitle({
+                      title: query,
+                      pageNumber: index,
+                    })
+                  )
+            }
           >
             {index + 1}
           </Pagination.Item>
@@ -45,15 +60,40 @@ const HomeView = () => {
     </>
   );
 
+  const handleSearchSubmit = (query: string) => {
+    dispatch(getPqrsPageByTitle({ title: query }));
+  };
+
+  const searchBarProps = {
+    onSubmit: handleSearchSubmit,
+    value: query,
+    onChange: setQuery,
+  };
+
   return (
-    <main className="px-5 py-5">
-      {modal}
-      <PQRSList list={pqrsPage?.content ?? []} />
-      <Pagination>
-        <PaginationItems />
-      </Pagination>
-      <CreateButton onClick={() => showModal()} />
-    </main>
+    <>
+      <Navbar collapseOnSelect expand="lg" bg="primary" variant="dark">
+        <Container fluid>
+          <Navbar.Brand>Horizon</Navbar.Brand>
+          <Navbar.Toggle
+            aria-controls="navbarScroll"
+            style={{ justifySelf: "flex-end" }}
+          />
+          <Navbar.Collapse id="navbarScroll">
+            <Button>Crear usuario</Button>
+            <TheSearchBar {...searchBarProps} />
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+      <main className="px-5">
+        {modal}
+        <PQRSList list={pqrsPage?.content ?? []} />
+        <Pagination>
+          <PaginationItems />
+        </Pagination>
+        <CreateButton onClick={() => showModal()} />
+      </main>
+    </>
   );
 };
 
