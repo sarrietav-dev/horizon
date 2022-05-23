@@ -23,7 +23,7 @@ const PqrsCard = ({ pqrs }: PqrsCardProps) => {
       {modal}
       <div className="card" onClick={showModal}>
         <div className="card-header d-flex justify-content-between">
-          <h6>Created by: {pqrs.personId}</h6>
+          <h6>Creado por: {pqrs.personId}</h6>
           <div className="d-flex align-items-center gap-1 lg-gap-3">
             <h6>Status: {pqrs.status}</h6>
             <StatusModifierButton
@@ -44,8 +44,7 @@ const PqrsCard = ({ pqrs }: PqrsCardProps) => {
           <p className="card-text">{pqrs.description}</p>
         </div>
         <div className="card-footer">
-          Created on:{" "}
-          {moment(pqrs.creationDate).format("YYYY-MM-DD - HH:mm:ss")}
+          Creado en: {moment(pqrs.creationDate).format("YYYY-MM-DD - HH:mm:ss")}
         </div>
       </div>
     </>

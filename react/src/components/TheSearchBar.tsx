@@ -17,7 +17,7 @@ const TheSearchBar = ({ onSubmit, onChange, value }: TheSearchBarProps) => {
     >
       <FormControl
         type="search"
-        placeholder="Search"
+        placeholder="Buscar por titulo"
         className="me-2"
         aria-label="Search"
         value={value}
