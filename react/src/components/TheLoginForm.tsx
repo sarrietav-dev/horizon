@@ -22,6 +22,7 @@ const TheLoginForm: React.FC<FormProps> = ({ onSubmit }) => {
                 type="email"
                 className="form-control"
                 placeholder="Email"
+                required
               />
             </div>
           </div>
@@ -33,6 +34,7 @@ const TheLoginForm: React.FC<FormProps> = ({ onSubmit }) => {
                 type="password"
                 className="form-control"
                 placeholder="Contraseña"
+                required
               />
             </div>
           </div>

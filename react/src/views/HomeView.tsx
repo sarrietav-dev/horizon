@@ -80,7 +80,7 @@ const HomeView = () => {
             style={{ justifySelf: "flex-end" }}
           />
           <Navbar.Collapse id="navbarScroll">
-            <Button>Crear usuario</Button>
+            <Button variant="info">Crear usuario</Button>
             <TheSearchBar {...searchBarProps} />
           </Navbar.Collapse>
         </Container>

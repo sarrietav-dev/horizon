@@ -22,6 +22,7 @@ const PqrsCreationForm = ({ onSubmit }: FormProps) => {
             className="form-control"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            required
           />
         </div>
         <div className="mb-3">
@@ -32,6 +33,7 @@ const PqrsCreationForm = ({ onSubmit }: FormProps) => {
             className="form-control"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
           />
         </div>
         <div className="d-flex justify-content-end">
