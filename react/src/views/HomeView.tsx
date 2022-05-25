@@ -3,7 +3,7 @@ import PqrsCard from "@/components/PqrsCard";
 import { PQRS } from "@/models/PQRS";
 import useModal from "@/hooks/useModal";
 import PqrsCreationForm from "@/components/PqrsCreationForm";
-import { Button, Container, Navbar, Pagination } from "react-bootstrap";
+import { Container, Navbar, Pagination } from "react-bootstrap";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux-hooks";
 import {
   createPqrs,
@@ -12,6 +12,7 @@ import {
 } from "@/stores/reducers/pqrs.store";
 import { useEffect, useState } from "react";
 import TheSearchBar from "@/components/TheSearchBar";
+import CreateUserButton from "@/components/CreateUserButton";
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
@@ -80,7 +81,7 @@ const HomeView = () => {
             style={{ justifySelf: "flex-end" }}
           />
           <Navbar.Collapse id="navbarScroll">
-            <Button variant="info">Crear usuario</Button>
+            <CreateUserButton />
             <TheSearchBar {...searchBarProps} />
           </Navbar.Collapse>
         </Container>
