@@ -46,7 +46,7 @@ export const authSlice = createSlice({
       state.refreshToken = refreshToken;
       localStorage.setItem(REFRESH_TOKEN, refreshToken);
       state.userRole = role;
-      localStorage.setItem(REFRESH_TOKEN, ROLE);
+      localStorage.setItem(ROLE, role);
       state.isAuth = true;
     });
   },
