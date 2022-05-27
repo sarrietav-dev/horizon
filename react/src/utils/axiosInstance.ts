@@ -1,7 +1,7 @@
 import axios from "axios";
 import tokenService from "@/services/tokenService";
 
-const baseURL = "/api";
+const baseURL = "https://horizon-java-app-udc.herokuapp.com/api";
 
 /**
  * Used to reduce code duplication.
