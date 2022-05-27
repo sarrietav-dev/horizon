@@ -16,11 +16,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
   private final UserDetailsService userDetailsService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -35,6 +40,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CustomAuthenticationFilter filter =
         new CustomAuthenticationFilter(authenticationManagerBean(), new TokenUtils());
     filter.setFilterProcessesUrl("/api/auth/login");
+
+    http.cors().configurationSource(request -> {
+      var cors = new CorsConfiguration();
+      cors.setAllowedOrigins(List.of("http://localhost:4200", "http://127.0.0.1:80", "*"));
+      cors.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+      cors.setAllowedHeaders(List.of(""));
+      return cors;
+    });
 
     http.csrf().disable();
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
