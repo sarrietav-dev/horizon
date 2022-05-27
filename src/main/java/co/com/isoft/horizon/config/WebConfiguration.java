@@ -12,9 +12,5 @@ public class WebConfiguration implements WebMvcConfigurer {
   public void addViewControllers(ViewControllerRegistry registry) {
     registry.addViewController("/{spring:\\w+}").setViewName("forward:/");
   }
-  @Override
-  public void addCorsMappings(CorsRegistry registry) {
-    registry.addMapping("/**")
-            .allowedMethods("*")
-            .allowedOrigins("*");  }
+
 }
