@@ -3,7 +3,7 @@ base = "react"
 
 [[redirects]]
 from = "/api/*"
-to = "https://horizon-java-app-udc.herokuapp.com/"
+to = "https://horizon-java-app-udc.herokuapp.com/:splat"
 status = 200
 
 [[redirects]]
